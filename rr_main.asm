@@ -2,9 +2,13 @@
 	DEVICE ZXSPECTRUM48 			; needed for SNA export (must be tab indented)
 	ORG 	$8000					; the uncontended 32KiB
 	
-	INCLUDE "rr_speccy_defs.asm"		; must be indented
-	INCLUDE "rr_top_border_render.asm"
-	INCLUDE "rr_top_border_buffer.asm"
+	INCLUDE "rr_start_screen.asm"
+	INCLUDE "rr_game_screen.asm"
+	INCLUDE "rr_speccy_defs.asm"
+	INCLUDE "rr_top_border_render_game.asm"
+	INCLUDE "rr_top_border_render_start.asm"
+	INCLUDE "rr_top_border_buffer_game.asm"
+	INCLUDE "rr_top_border_buffer_start.asm"
 	INCLUDE "rr_game.asm"
 	INCLUDE "rr_border_font.asm"
 	INCLUDE "rr_sprite_prerender.asm"
@@ -12,15 +16,8 @@
 	
 START:
 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
-	CALL 	INITIAL_SETUP
+	CALL 	START_MAIN				; go to start screen
 
-ANIMATE_MAIN:
-	HALT							; wait for vsync (fired after bottom border, start of vblank)
-
-	CALL	VBLANK_PERIOD_WORK		; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
-	CALL	TOP_BORDER_RENDER		; timining-critical flipping of top border colours
-	CALL 	MAIN_GAME_LOOP			; actual game loop
-	JP		ANIMATE_MAIN
 
 
 ; 8 scanline * 224 = 1,752 t-states (minus some for alignment, push/pop, calls, etc...)
@@ -49,14 +46,6 @@ VBLANK_LOOP:
 
 	RET								; VBLANK_PERIOD_WORK
 									
-INITIAL_SETUP:
-	LD 		A, 0					
-	OUT		($FE), A				; set initial border black
-
-	CALL 	SPRITE_INIT				; draw initial sprite and any other setup
-
-	RET								; INITIAL_SETUP
-
 ; set up IM2 - so we don't wate time scanning keyboard and so on
 ; use ROM trick for interrupt table
 ; from http://www.breakintoprogram.co.uk/hardware/computers/zx-spectrum/interrupts 
@@ -75,44 +64,13 @@ INITIALISE_INTERRUPT:
 	ret								; INITIALISE_INTERRUPT
  
 INTERRUPT:              
-	; push af                       ; save all the registers on the stack
-	; push bc                       ; this is probably not necessary unless
-	; push de                       ; we're looking at returning cleanly
-	; push hl                       ; back to basic at some point
-	; push ix
-	; exx
-	; ex af,af
-	; push af
-	; push bc
-	; push de
-	; push hl
-	; push iy
-
-
-; do stuff
-
-	; pop iy                        ; restore all the registers
-	; pop hl
-	; pop de
-	; pop bc
-	; pop af
-	; exx
-	; ex af,af
-	; pop ix
-	; pop hl
-	; pop de
-	; pop bc
-	; pop af
 	EI                               ; Enable interrupts
 	RET                              ; INTERRUPT
-
-MAIN_FRAME:
-	DEFB 		0
 
 ; screen pic
 	ORG 		$4000
 	INCBIN  	"fishing-mina.scr"
 
 ; Deployment: Snapshot
-   SAVESNA 	"zx_scoreboarder.sna", START
+   SAVESNA 	"rr.sna", START
    

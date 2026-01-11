@@ -1,10 +1,5 @@
 
 
-MAIN_GAME_LOOP: 
-	CALL	UPDATE_BORDER_BUFFER
-	CALL 	USER_INPUT
-	CALL 	SPRITE_RENDER
-	RET
 
 
 ; Address (Hex)	Binary (High Byte)	Bit 0	Bit 1	Bit 2	Bit 3	Bit 4

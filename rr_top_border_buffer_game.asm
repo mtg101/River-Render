@@ -1,43 +1,6 @@
 ; 56 x 11
-TOP_BORDER_BUFFER:
+TOP_BORDER_BUFFER_GAME:
 	DEFS 	56*11, COL_CYN
-
-	; horizon clouds -- just left & right 2 cols each
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 7, 5
-	DEFB	5, 5, 7, 5
-	DEFB	5, 5, 7, 5
-	
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-
-	DEFB	5, 7, 7, 7
-	DEFB	5, 7, 7, 7
-	DEFB	5, 7, 7, 5
-	DEFB	7, 7, 7, 5
-	DEFB	7, 7, 7, 5
-	DEFB	7, 7, 5, 5
-	DEFB	7, 7, 5, 5
-	DEFB	5, 5, 5, 5
-
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
 
 
 UPDATE_BORDER_BUFFER:
@@ -82,7 +45,7 @@ BORDER_BUFFER_LIVES_DEC:
 
 UPDATE_BORDER_BUFFER_LIVES:
 	LD 		DE, 11
-	LD		HL, TOP_BORDER_BUFFER
+	LD		HL, TOP_BORDER_BUFFER_GAME
 
 	LD		A, (BORDER_BUFFER_LIVES)
 	CP 		8
@@ -374,7 +337,7 @@ UPDATE_BORDER_BUFFER_SCORE:
 	LD 		HL, DE
 
 	; copy font to buffer
-	LD 		DE, TOP_BORDER_BUFFER + 2	; start of left number
+	LD 		DE, TOP_BORDER_BUFFER_GAME + 2	; start of left number
 
 	LD 		B, 8			; 8 lots of 7 rows
 UPDATE_BORDER_BUFFER_SCORE_OUTER_LOOP:
@@ -421,7 +384,7 @@ UPDATE_BORDER_BUFFER_SCORE_INNER_LOOP:
 	LD 		HL, DE
 
 	; copy font to buffer
-	LD 		DE, TOP_BORDER_BUFFER + 6	; start of right number
+	LD 		DE, TOP_BORDER_BUFFER_GAME + 6	; start of right number
 
 	LD 		B, 8			; 8 lots of 7 rows
 UPDATE_BORDER_BUFFER_SCORE_OUTER_LOOP_R:
@@ -498,7 +461,7 @@ BORDER_BUFFER_ENERGY_BG_COL:
 
 UPDATE_BORDER_BUFFER_ENERGY:
 	LD 		DE, 10		; 11 per row, but INCing over for double column
-	LD 		HL, TOP_BORDER_BUFFER + 9
+	LD 		HL, TOP_BORDER_BUFFER_GAME + 9
 						; points to first energy bar
 
 	; 56 - (BORDER_BUFFER_ENERGY) : rows of bg
