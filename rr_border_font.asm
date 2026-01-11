@@ -1,0 +1,118 @@
+
+
+SB_BORDER_FONT_LUT:
+	DEFW 		SB_BORDER_FONT_0
+	DEFW 		SB_BORDER_FONT_1
+	DEFW 		SB_BORDER_FONT_2
+	DEFW 		SB_BORDER_FONT_3
+	DEFW 		SB_BORDER_FONT_4
+	DEFW 		SB_BORDER_FONT_5
+	DEFW 		SB_BORDER_FONT_6
+	DEFW 		SB_BORDER_FONT_7
+	DEFW 		SB_BORDER_FONT_8
+	DEFW 		SB_BORDER_FONT_9
+
+SB_BORDER_FONT_0:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_1:
+	DEFB 		5, 0, 5
+	DEFB 		0, 0, 5
+	DEFB 		5, 0, 5
+	DEFB 		5, 0, 5
+	DEFB 		5, 0, 5
+	DEFB 		5, 0, 5
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_2:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		5, 5, 0
+	DEFB 		5, 0, 5
+	DEFB 		5, 0, 5
+	DEFB 		0, 5, 5
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_3:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		5, 5, 0
+	DEFB 		5, 0, 0
+	DEFB 		5, 0, 0
+	DEFB 		5, 5, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_4:
+	DEFB 		5, 5, 0
+	DEFB 		5, 0, 0
+	DEFB 		5, 0, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 0, 0
+	DEFB 		5, 0, 0
+	DEFB 		5, 5, 0
+	DEFB 		5, 5, 0
+
+SB_BORDER_FONT_5:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 5, 5
+	DEFB 		5, 0, 5
+	DEFB 		5, 0, 5
+	DEFB 		5, 5, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_6:
+	DEFB 		5, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 5, 5
+	DEFB 		0, 0, 5
+	DEFB 		0, 5, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 0, 0
+	DEFB 		5, 0, 5
+
+SB_BORDER_FONT_7:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		5, 0, 0
+	DEFB 		5, 0, 0
+	DEFB 		0, 0, 5
+	DEFB 		0, 0, 5
+	DEFB 		0, 5, 5
+	DEFB 		0, 5, 5
+
+SB_BORDER_FONT_8:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_9:
+	DEFB 		5, 0, 5
+	DEFB 		0, 0, 0
+	DEFB 		0, 5, 0
+	DEFB 		0, 5, 0
+	DEFB 		5, 0, 0
+	DEFB 		5, 5, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 5
+
+
+
+
+

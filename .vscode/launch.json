@@ -1,0 +1,158 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "dezog",
+            "request": "launch",
+            "name": "Internal Simulator",
+            "remoteType": "zsim",
+            "zsim": {
+                "preset": "spectrum",
+                "memoryModel": "ZXNEXT"
+            },
+            "sjasmplus": [
+                {
+                    "path": "rr.sld"
+                }
+            ],
+            "history": {
+                "reverseDebugInstructionCount": 1000000,
+                "spotCount": 10,
+                "codeCoverageEnabled": true
+            },
+            "startAutomatically": false,
+            "commandsAfterLaunch": [
+            ],
+            "rootFolder": "${workspaceFolder}",
+            // "topOfStack": "stack_top",
+            "load": "rr.sna",
+            //"load": "rr.nex",
+            "smallValuesMaximum": 513,
+            "tmpDir": ".tmp"
+        },
+
+        {
+            "type": "dezog",
+            "request": "launch",
+            "name": "CSpect",
+            "remoteType": "cspect",
+            "sjasmplus": [
+                {
+                    "path": "rr.sld"
+                }
+            ],
+            "history": {
+                "reverseDebugInstructionCount": 1000000,
+                "spotCount": 10
+            },
+            "startAutomatically": false,
+            "commandsAfterLaunch": [
+            ],
+            "rootFolder": "${workspaceFolder}",
+            // "topOfStack": "stack_top",
+            "load": "rr.sna",
+            //"load": "rr.nex",
+            "smallValuesMaximum": 513,
+            "tmpDir": ".tmp"
+        },
+
+        {
+            "type": "dezog",
+            "request": "launch",
+            "name": "ZEsarUX",
+            "remoteType": "zrcp",
+            "sjasmplus": [
+                {
+                    "path": "rr.sld"
+                }
+            ],
+            "history": {
+                "reverseDebugInstructionCount": 1000000,
+                "spotCount": 10,
+            },
+            "startAutomatically": false,
+            "commandsAfterLaunch": [
+            ],
+            "rootFolder": "${workspaceFolder}",
+            // "topOfStack": "stack_top",
+            "load": "rr.sna",
+            //"load": "rr.nex",
+            "smallValuesMaximum": 513,
+            "tmpDir": ".tmp"
+        },
+
+        {
+            "type": "dezog",
+            "request": "launch",
+            "name": "ZXNext",
+            "remoteType": "zxnext",
+            "zxnext": {
+                "serial": "/dev/tty.usbserial-AQ007PCD"
+            },
+            "sjasmplus": [
+                {
+                    "path": "rr.sld"
+                }
+            ],
+            "history": {
+                "reverseDebugInstructionCount": 1000000,
+                "spotCount": 10
+            },
+            "startAutomatically": false,
+            "commandsAfterLaunch": [],
+            "rootFolder": "${workspaceFolder}",
+            // "topOfStack": "stack_top",
+            "load": "rr.sna",
+            //"load": "rr.nex",
+            "smallValuesMaximum": 513,
+            "tmpDir": ".tmp"
+        },
+
+        {
+            "type": "dezog",
+            "request": "launch",
+            "name": "MAME",
+            "remoteType": "mame",
+            "mame": {
+                "port": 12000
+            },
+            "sjasmplus": [
+                {
+                    "path": "rr.sld"
+                }
+            ],
+            "startAutomatically": false,
+            "commandsAfterLaunch": [],
+            "rootFolder": "${workspaceFolder}",
+            // "topOfStack": "stack_top",
+            "load": "rr.sna",
+            "smallValuesMaximum": 513,
+            "tmpDir": ".tmp"
+        },
+
+        {
+            "type": "dezog",
+            "request": "launch",
+            "name": "Unit Tests",
+            "unitTests": true,
+            "presentation": {
+                "hidden": true
+            },
+            "remoteType": "zsim",
+            "zsim": {
+                "Z80N": true,
+                "visualMemory": true,
+                "memoryModel": "ZXNEXT"
+            },
+            "sjasmplus": [
+                {
+                    "path": "rr.sld"
+                }
+            ],
+            "startAutomatically": true,
+            "rootFolder": "${workspaceFolder}",
+            "load": "rr.nex"
+        }
+
+    ]
+}

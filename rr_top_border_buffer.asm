@@ -1,0 +1,586 @@
+; 56 x 11
+TOP_BORDER_BUFFER:
+	DEFS 	56*11, COL_CYN
+
+	; horizon clouds -- just left & right 2 cols each
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 7, 5
+	DEFB	5, 5, 7, 5
+	DEFB	5, 5, 7, 5
+	
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+	DEFB	5, 5, 7, 7
+
+	DEFB	5, 7, 7, 7
+	DEFB	5, 7, 7, 7
+	DEFB	5, 7, 7, 5
+	DEFB	7, 7, 7, 5
+	DEFB	7, 7, 7, 5
+	DEFB	7, 7, 5, 5
+	DEFB	7, 7, 5, 5
+	DEFB	5, 5, 5, 5
+
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+	DEFB	5, 5, 5, 5
+
+
+UPDATE_BORDER_BUFFER:
+	CALL	UPDATE_BORDER_BUFFER_LIVES
+	CALL	UPDATE_BORDER_BUFFER_SCORE
+	CALL	UPDATE_BORDER_BUFFER_ENERGY
+	RET 				; UPDATE_BORDER_BUFFER
+
+BORDER_BUFFER_LIVES:
+	DEFB	6			; 6 / 8 lives
+
+BORDER_BUFFER_LIVES_PEN:
+	DEFB	COL_BLU
+
+BORDER_BUFFER_LIVES_PAP:
+	DEFB	COL_CYN			
+
+BORDER_BUFFER_LIVES_INC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		8
+	RET 	NC			; already 8 or bigger, don't INC
+
+	INC 	A
+	LD 		(BORDER_BUFFER_LIVES), A
+
+	RET 				; BORDER_BUFFER_LIVES_INC
+
+BORDER_BUFFER_LIVES_DEC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		0
+	RET 	Z			; already 0, don't DEC
+
+	DEC 	A
+	LD 		(BORDER_BUFFER_LIVES), A
+	RET 				; BORDER_BUFFER_LIVES_DEC
+
+UPDATE_BORDER_BUFFER_LIVES:
+	LD 		DE, 11
+	LD		HL, TOP_BORDER_BUFFER
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		8
+	JP      C, UPDATE_LIVES_8_OFF
+
+UPDATE_LIVES_8_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_8_READY
+
+UPDATE_LIVES_8_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_8_READY:
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		7
+	JP      C, UPDATE_LIVES_7_OFF
+
+UPDATE_LIVES_7_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_7_READY
+
+UPDATE_LIVES_7_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_7_READY:
+	INC		HL			; right hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		6
+	JP      C, UPDATE_LIVES_6_OFF
+
+UPDATE_LIVES_6_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_6_READY
+
+UPDATE_LIVES_6_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_6_READY:
+	DEC 	HL			; left hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		5
+	JP      C, UPDATE_LIVES_5_OFF
+
+UPDATE_LIVES_5_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_5_READY
+
+UPDATE_LIVES_5_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_5_READY:
+	INC		HL			; right hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		4
+	JP      C, UPDATE_LIVES_4_OFF
+
+UPDATE_LIVES_4_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_4_READY
+
+UPDATE_LIVES_4_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_4_READY:
+	DEC 	HL			; left hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		3
+	JP      C, UPDATE_LIVES_3_OFF
+
+UPDATE_LIVES_3_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_3_READY
+
+UPDATE_LIVES_3_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_3_READY:
+	INC		HL			; right hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		2
+	JP      C, UPDATE_LIVES_2_OFF
+
+UPDATE_LIVES_2_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_2_READY
+
+UPDATE_LIVES_2_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_2_READY:
+	DEC 	HL			; left hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	LD		A, (BORDER_BUFFER_LIVES)
+	CP 		1
+	JP      C, UPDATE_LIVES_1_OFF
+
+UPDATE_LIVES_1_ON:
+	LD 		A, (BORDER_BUFFER_LIVES_PEN)
+	JP 		UPDATE_LIVES_1_READY
+
+UPDATE_LIVES_1_OFF:
+	LD 		A, (BORDER_BUFFER_LIVES_PAP)
+
+UPDATE_LIVES_1_READY:
+	INC		HL			; right hand column
+
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+	LD		(HL), A	
+	ADD 	HL, DE
+
+	RET 				; UPDATE_BOARDER_BUFFER_LIVES
+
+BORDER_BUFFER_SCORE:
+	DEFB	%00100011	; BCD 2-3 for testing
+
+	; colours from font
+
+
+BORDER_BUFFER_SCORE_INC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
+	LD 		A, (BORDER_BUFFER_SCORE)     
+
+	; check max
+	CP 		%10011001
+	RET 	Z
+
+	; inc
+	ADD 	A, 1        ; ADD not INC for correct flags
+    DAA                 ; BCD adjust
+    LD 		(BORDER_BUFFER_SCORE), A
+
+	RET 				; BORDER_BUFFER_SCORE_INC
+
+BORDER_BUFFER_SCORE_DEC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
+	LD 		A, (BORDER_BUFFER_SCORE)     
+
+	; check min
+	CP 		0
+	RET 	Z
+
+	; dec
+    SUB 	1           ; SUB not DEC for correct flags
+    DAA                 ; BCD adjust
+    LD 		(BORDER_BUFFER_SCORE), A
+
+	RET 				; BORDER_BUFFER_SCORE_DEC
+
+UPDATE_BORDER_BUFFER_SCORE:
+	; left
+	LD 		A, (BORDER_BUFFER_SCORE)
+	AND 	%11110000	; left BCD
+	SRL 	A
+	SRL 	A
+	SRL 	A			; shifted so it's double actual number
+
+	LD 		D, 0
+	LD 		E, A 		; DE is offset for LUT
+
+	LD 		HL, SB_BORDER_FONT_LUT
+	ADD 	HL, DE		; (hl) points to font
+	LD 		DE, (HL)
+	LD 		HL, DE
+
+	; copy font to buffer
+	LD 		DE, TOP_BORDER_BUFFER + 2	; start of left number
+
+	LD 		B, 8			; 8 lots of 7 rows
+UPDATE_BORDER_BUFFER_SCORE_OUTER_LOOP:
+	PUSH 	BC
+	; 7 rows of 3 pixels
+	LD 		B, 7
+UPDATE_BORDER_BUFFER_SCORE_INNER_LOOP:
+	PUSH 	HL
+
+	LDI 
+	LDI 
+	LDI 
+
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE				; skip 8 to next row
+
+	POP		HL
+	DJNZ 	UPDATE_BORDER_BUFFER_SCORE_INNER_LOOP
+
+	INC		HL
+	INC		HL
+	INC		HL				; move to new font row
+
+	POP 	BC
+	DJNZ 	UPDATE_BORDER_BUFFER_SCORE_OUTER_LOOP
+
+	; right
+	LD 		A, (BORDER_BUFFER_SCORE)
+	AND 	%00001111		; right BCD
+	SLA		A
+
+	LD 		D, 0
+	LD 		E, A 			; DE is offset for LUT
+
+	LD 		HL, SB_BORDER_FONT_LUT
+	ADD 	HL, DE			; (hl) point to font
+	LD 		DE, (HL)
+	LD 		HL, DE
+
+	; copy font to buffer
+	LD 		DE, TOP_BORDER_BUFFER + 6	; start of right number
+
+	LD 		B, 8			; 8 lots of 7 rows
+UPDATE_BORDER_BUFFER_SCORE_OUTER_LOOP_R:
+	PUSH 	BC
+	; 7 rows of 3 pixels
+	LD 		B, 7
+UPDATE_BORDER_BUFFER_SCORE_INNER_LOOP_R:
+	PUSH 	HL
+
+	LDI 
+	LDI 
+	LDI 
+
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE
+	INC 	DE				; skip 8 to next row
+
+	POP		HL
+	DJNZ 	UPDATE_BORDER_BUFFER_SCORE_INNER_LOOP_R
+
+	INC		HL
+	INC		HL
+	INC		HL				; move to new font row
+
+	POP 	BC
+	DJNZ 	UPDATE_BORDER_BUFFER_SCORE_OUTER_LOOP_R
+
+	RET 				; UPDATE_BOARDER_BUFFER_SCORE
+
+BORDER_BUFFER_ENERGY:
+	DEFB	47
+
+BORDER_BUFFER_ENERGY_INC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
+	LD		A, (BORDER_BUFFER_ENERGY)
+	CP 		56
+	RET 	NC			; already 56 or bigger, don't INC
+
+	INC 	A
+	LD 		(BORDER_BUFFER_ENERGY), A
+
+	RET 				; BORDER_BUFFER_ENERGY_INC
+
+BORDER_BUFFER_ENERGY_DEC:
+	LD 		A, 1					
+	LD 		(USER_INPUT_ACTION), A	; something was pressed
+
+	LD		A, (BORDER_BUFFER_ENERGY)
+	CP 		0
+	RET 	Z			; already 0, don't DEC
+
+	DEC 	A
+	LD 		(BORDER_BUFFER_ENERGY), A
+	RET 				; BORDER_BUFFER_ENERGY_DEC
+
+BORDER_BUFFER_ENERGY_HI_COL:
+	DEFB	COL_GRN
+
+BORDER_BUFFER_ENERGY_MED_COL:
+	DEFB	COL_YEL
+
+BORDER_BUFFER_ENERGY_LOW_COL:
+	DEFB	COL_RED
+
+BORDER_BUFFER_ENERGY_BG_COL:
+	DEFB	COL_CYN
+
+UPDATE_BORDER_BUFFER_ENERGY:
+	LD 		DE, 10		; 11 per row, but INCing over for double column
+	LD 		HL, TOP_BORDER_BUFFER + 9
+						; points to first energy bar
+
+	; 56 - (BORDER_BUFFER_ENERGY) : rows of bg
+	LD 		A, (BORDER_BUFFER_ENERGY)
+	LD  	B, A
+	LD 		A, 56
+	SUB		B					; A now has how many rows of bg
+	JP 		Z, ENERGY_HI	; energy is 56 full, no bg colour needed
+
+	LD 		B, A
+	LD 		A, (BORDER_BUFFER_ENERGY_BG_COL)
+ENERGY_BG_LOOP:
+	LD 	 	(HL), A
+	INC 	HL
+	LD 	 	(HL), A
+	ADD 	HL, DE
+	DJNZ 	ENERGY_BG_LOOP
+
+ENERGY_HI:
+	; (BORDER_BUFFER_ENERGY) - 42 : rows of hi (max 14)
+	LD 		A, 42
+	LD 		B, A
+	LD 		A, (BORDER_BUFFER_ENERGY)
+	SUB 	B				; (BORDER_BUFFER_ENERGY) - 42
+	JP   	C, ENERGY_MID	; negative so no hi
+	JP      Z, ENERGY_MID	; 0 so no high
+
+	LD		B, A 
+	LD 		A, (BORDER_BUFFER_ENERGY_HI_COL)
+ENERGY_HI_LOOP:
+	LD 	 	(HL), A
+	INC 	HL
+	LD 	 	(HL), A
+	ADD 	HL, DE
+	DJNZ 	ENERGY_HI_LOOP
+
+ENERGY_MID:
+	; (BORDER_BUFFER_ENERGY) - 21 : rows of med (max 21)
+	LD 		A, 21
+	LD 		B, A
+	LD 		A, (BORDER_BUFFER_ENERGY)
+	SUB 	B				; (BORDER_BUFFER_ENERGY) - 42
+	JP   	C, ENERGY_LOW	; negative so no med
+	JP      Z, ENERGY_LOW	; 0 so no med
+
+	CP 		21
+	JP 		C, ENERGY_MED_OK
+
+	LD 		A, 21			; max 21
+
+ENERGY_MED_OK:
+	LD		B, A 
+	LD 		A, (BORDER_BUFFER_ENERGY_MED_COL)
+ENERGY_MED_LOOP:
+	LD 	 	(HL), A
+	INC 	HL
+	LD 	 	(HL), A
+	ADD 	HL, DE
+	DJNZ 	ENERGY_MED_LOOP
+
+ENERGY_LOW:
+	; (BORDER_BUFFER_ENERGY)  : rows of low (max 21)
+	LD 		A, (BORDER_BUFFER_ENERGY)
+	CP 		0
+	JP      Z, ENERGY_DONE	; 0 so no low
+
+	CP 		21
+	JP 		C, ENERGY_LOW_OK
+
+	LD 		A, 21			; max 21
+
+ENERGY_LOW_OK:
+	LD		B, A 
+	LD 		A, (BORDER_BUFFER_ENERGY_LOW_COL)
+ENERGY_LOW_LOOP:
+	LD 	 	(HL), A
+	INC 	HL
+	LD 	 	(HL), A
+	ADD 	HL, DE
+	DJNZ 	ENERGY_LOW_LOOP
+
+ENERGY_DONE:
+	RET					; UPDATE_BORDER_BUFFER_ENERGY
+
+
