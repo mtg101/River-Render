@@ -2,44 +2,6 @@
 TOP_BORDER_BUFFER:
 	DEFS 	56*11, COL_CYN
 
-	; horizon clouds -- just left & right 2 cols each
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 7, 5
-	DEFB	5, 5, 7, 5
-	DEFB	5, 5, 7, 5
-	
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-	DEFB	5, 5, 7, 7
-
-	DEFB	5, 7, 7, 7
-	DEFB	5, 7, 7, 7
-	DEFB	5, 7, 7, 5
-	DEFB	7, 7, 7, 5
-	DEFB	7, 7, 7, 5
-	DEFB	7, 7, 5, 5
-	DEFB	7, 7, 5, 5
-	DEFB	5, 5, 5, 5
-
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-	DEFB	5, 5, 5, 5
-
-
 UPDATE_BORDER_BUFFER:
 	CALL	UPDATE_BORDER_BUFFER_LIVES
 	CALL	UPDATE_BORDER_BUFFER_SCORE

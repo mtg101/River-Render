@@ -76,14 +76,6 @@ INITIAL_SETUP:
 
 	CALL 	SPRITE_INIT				; draw initial sprite and any other setup
 
-	LD 		B, 16					; number of block to set to trigger attr
-	LD 		HL, ATTR_END - 15		; first attr to change
-	LD 		A, ATTR_FGG				; trigger attr (flashing green on green)
-INITIAL_SETUP_TRIGGE_ATTR_LOOP:	
-	LD		(HL), A 
-	INC  	HL
-	DJNZ 	INITIAL_SETUP_TRIGGE_ATTR_LOOP
-
 	RET								; INITIAL_SETUP
 
 ; set up IM2 - so we don't wate time scanning keyboard and so on
@@ -138,6 +130,8 @@ INTERRUPT:
 MAIN_FRAME:
 	DEFB 		0
 
+	ORG 		$4000
+	INCBIN		"fishing-mina.scr"
 
 ; Deployment: Snapshot
    SAVESNA 	"rr.sna", START
