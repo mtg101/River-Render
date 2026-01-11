@@ -2,14 +2,13 @@
 	DEVICE ZXSPECTRUM48 			; needed for SNA export (must be tab indented)
 	ORG 	$8000					; the uncontended 32KiB
 	
-	INCLUDE "rr_defs.asm"
-	INCLUDE "rr_game.asm"
-	INCLUDE "rr_vector_output.asm"
-	INCLUDE "rr_stack_render.asm"
-	INCLUDE "rr_border_font.asm"
+	INCLUDE "rr_speccy_defs.asm"		; must be indented
 	INCLUDE "rr_top_border_render.asm"
 	INCLUDE "rr_top_border_buffer.asm"
+	INCLUDE "rr_game.asm"
+	INCLUDE "rr_border_font.asm"
 	INCLUDE "rr_sprite_prerender.asm"
+	INCLUDE "rr_vector_output.asm"
 	
 START:
 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
@@ -22,26 +21,6 @@ ANIMATE_MAIN:
 	CALL	TOP_BORDER_RENDER		; timining-critical flipping of top border colours
 	CALL 	MAIN_GAME_LOOP			; actual game loop
 	JP		ANIMATE_MAIN
-
-; flashing green on green 
-ATTR_FGG        = %10100100
-
-
-WAIT_BOTTOM_MAIN_SCREEN:
-WAIT_BOTTOM_MAIN_SCREEN_LOOP:
-	IN 		A, ($FF)
-	CP 		ATTR_FGG
-	RET 	Z						; WAIT_BOTTOM_MAIN_SCREEN
-	JP 		WAIT_BOTTOM_MAIN_SCREEN_LOOP
-
-
-WAIT_BOTTOM_MAIN_SCREEN_OFF:
-WAIT_BOTTOM_MAIN_SCREEN_OFF_LOOP:
-	IN 		A, ($FF)
-	CP 		ATTR_FGG
-	RET 	NZ						; WAIT_BOTTOM_MAIN_SCREEN_OFF
-	JP 		WAIT_BOTTOM_MAIN_SCREEN_OFF_LOOP
-
 
 
 ; 8 scanline * 224 = 1,752 t-states (minus some for alignment, push/pop, calls, etc...)
@@ -130,9 +109,10 @@ INTERRUPT:
 MAIN_FRAME:
 	DEFB 		0
 
+; screen pic
 	ORG 		$4000
-	INCBIN		"fishing-mina.scr"
+	INCBIN  	"fishing-mina.scr"
 
 ; Deployment: Snapshot
-   SAVESNA 	"rr.sna", START
+   SAVESNA 	"zx_scoreboarder.sna", START
    
