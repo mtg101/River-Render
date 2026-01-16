@@ -2,7 +2,9 @@
 UPDATE_BORDER_BUFFER_START:
 	CALL 	UPDATE_BORDER_BUFFER_START_SCROLL
 	CALL 	UPDATE_BORDER_BUFFER_START_NEW_COL
-	RET 					; UPDATE_BORDER_BUFFER
+;	RET 					; UPDATE_BORDER_BUFFER
+	JP		START_ANIMATE_MAIN
+
 
 
 UPDATE_BORDER_BUFFER_START_SCROLL:
@@ -25,10 +27,9 @@ UPDATE_BORDER_BUFFER_START_NEW_COL:
 ; river width
     CALL  	RNG
     LD    	A, (NEXT_RNG)
-	AND		%00000011			; 0-3
+	AND		%00000110			; 0-3 * 2 for 16bit addr
 
 	; jump table
-	RLCA 						; 16bit, so shift left to double
 	LD 		H, 0
 	LD		L, A				; offset in HL
 	LD 		DE, RIVER_WIDTH_JUMP_TABLE
@@ -47,10 +48,9 @@ RIVER_WIDTH_DONE:
     LD    	A, (NEXT_RNG)
 	RRA 
 	RRA 						; different bits from RNG
-	AND		%00000011			; 0-3
+	AND		%00000110			; 0-3 * 2 for 16bit
 
 	; jump table
-	RLCA 						; 16bit, so shift left to double
 	LD 		H, 0
 	LD		L, A				; offset in HL
 	LD 		DE, TOP_BANK_WIDTH_JUMP_TABLE

@@ -2,25 +2,19 @@
 	INCLUDE 	"rr_stack_render_macros.asm"
 
 
-STACK_RENDER:														; 10 T (JP in)
+STACK_RENDER:														
 	; push any registers we need to preserve...
 	; none for now
 
+; hack border to see timings
+	; LD 		A, COL_BLK			
+	; OUT		($FE), A		
+
 	; preserve SP
-	LD 			(STACK_POINTER_BACKUP), SP							; 20 T
-
-; hack border red to see timings
-	PUSH 	AF
-	LD 		A, 2					
-	OUT		($FE), A		
-	POP 	AF
+	LD 			(STACK_POINTER_BACKUP), SP							
 
 
-STACK_RENDER_PIXELS:
-	; 192 rows = 192 @ 262 T each
-;	Stack_Row_Pixel	0	,	192  (done during vblank)
-
-
+	Stack_Row_Pixel	0	,	192		; buffer for loop
 	Stack_Row_Pixel	1	,	0
 	Stack_Row_Pixel	2	,	1
 	Stack_Row_Pixel	3	,	2
@@ -214,28 +208,16 @@ STACK_RENDER_PIXELS:
 	Stack_Row_Pixel	191	,	190
 	Stack_Row_Pixel	192	,	191
 
-; hack border yellow to see timings
-	LD 		A, 6					
-	OUT		($FE), A		
 
-
-STACK_RENDER_BUFFER_DONE:
 	; restore SP
-	LD 			SP, (STACK_POINTER_BACKUP)							; 20 T
+	LD 			SP, (STACK_POINTER_BACKUP)		
 
-	; pop any registers we need to restore...
-	; none for now
-	RET			; stack render pixels
+; hack border to see timings
+	; LD 		A, COL_YEL		
+	; OUT		($FE), A		
 
-
-
-; chasing the beam
-; (using this as we need all the scanlines chasing the beam)
-	; using HALT not floating bus
-	; and timing 8 vblank & 56 top border away
-	; then have all 192 main screen plus 56 bottom border before HALT
-	; = 248 scanlines
-	; = 50,552 t-states
+;	RET			; STACK_RENDER
+	JP		START_ANIMATE_MAIN
 
 
 STACK_POINTER_BACKUP:
