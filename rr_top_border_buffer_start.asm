@@ -22,7 +22,7 @@ UPDATE_BORDER_BUFFER_START_SCROLL_LOOP:
 
 UPDATE_BORDER_BUFFER_START_NEW_COL:
 
-; top bank
+; river width
     CALL  	RNG
     LD    	A, (NEXT_RNG)
 	AND		%00000011			; 0-3
@@ -31,7 +31,7 @@ UPDATE_BORDER_BUFFER_START_NEW_COL:
 	RLCA 						; 16bit, so shift left to double
 	LD 		H, 0
 	LD		L, A				; offset in HL
-	LD 		DE, TOP_BANK_JUMP_TABLE
+	LD 		DE, RIVER_WIDTH_JUMP_TABLE
 	ADD 	HL, DE				; points to where to call
 
 	LD 		A, (HL)				; low byt eof addr
@@ -40,10 +40,10 @@ UPDATE_BORDER_BUFFER_START_NEW_COL:
 	LD 		L, A				; HL now has dest addr
 
 	JP  	(HL)				; quick jump
-TOP_BANK_DONE:
+RIVER_WIDTH_DONE:
 
 
-; bottom bank
+; top bank
     LD    	A, (NEXT_RNG)
 	RRA 
 	RRA 						; different bits from RNG
@@ -53,7 +53,7 @@ TOP_BANK_DONE:
 	RLCA 						; 16bit, so shift left to double
 	LD 		H, 0
 	LD		L, A				; offset in HL
-	LD 		DE, BOTTOM_BANK_JUMP_TABLE
+	LD 		DE, TOP_BANK_WIDTH_JUMP_TABLE
 	ADD 	HL, DE				; points to where to call
 
 	LD 		A, (HL)				; low byt eof addr
@@ -62,28 +62,28 @@ TOP_BANK_DONE:
 	LD 		L, A				; HL now has dest addr
 
 	JP  	(HL)				; quick jump
-BOTTOM_BANK_DONE:
+TOP_BANK_WIDTH_DONE:
 
 
-; river
-	; cal from banks...
-	LD 		A, (TOP_BANK_HEIGHT)
+; bottom bank
+	; what's left...
+	LD 		A, (TOP_BANK_WIDTH)
 	LD 		B, A				; top heigh in B
-	LD 		A, (BOTTOM_BANK_HEIGHT)
+	LD 		A, (RIVER_WIDTH)
 	ADD 	A, B				
-	LD 		B, A 				; B now has top+bottom height
+	LD 		B, A 				; B now has top+river width
 
 	LD 		A, 48				; 48 potential river rows
-	SUB 	B 					; sub the banks, leaving river size in A
+	SUB 	B 					; sub the top+river, leaving bottom width in A
 
-	LD 		(RIVER_HEIGHT), A	; store in mem
+	LD 		(BOTTOM_BANK_WIDTH), A	; store in mem
 
 ; all values updated ready to go...
 	LD 		HL, TOP_BORDER_BUFFER_START_RIVER + 10	; first row right 11th col index 10
 	LD 		DE, 11				; to step to next row
 
 ; top bank new col
-	LD 		A, (TOP_BANK_HEIGHT)
+	LD 		A, (TOP_BANK_WIDTH)
 	CP 		0
 	JP 		Z, TOP_BANK_NEW_DONE
 
@@ -96,7 +96,7 @@ TOP_BANK_LOOP:
 TOP_BANK_NEW_DONE:
 
 ; river new col
-	LD 		A, (RIVER_HEIGHT)
+	LD 		A, (RIVER_WIDTH)
 	LD 		B, A
 RIVER_LOOP:
 	LD		(HL), COL_BLU
@@ -104,7 +104,7 @@ RIVER_LOOP:
 	DJNZ	RIVER_LOOP
 
 ; bottom bank new col
-	LD 		A, (BOTTOM_BANK_HEIGHT)
+	LD 		A, (BOTTOM_BANK_WIDTH)
 	CP    	0
 	JP  	Z, BOTTOM_BANK_NEW_DONE
 
@@ -119,56 +119,71 @@ BOTTOM_BANK_NEW_DONE:
 	RET 					; UPDATE_BORDER_BUFFER_START_NEW_COL
 
 
-; inc top, max 18
-TOP_BANK_INC:
-	LD 		A, (TOP_BANK_HEIGHT)
-	CP 		18
-	JP 		Z, TOP_BANK_INC_DONE
+; inc river
+RIVER_WIDTH_INC:
+	LD 		A, (RIVER_WIDTH)
+	CP 		48
+	JP  	Z, RIVER_WIDTH_INC_DONE		; max 48
 
 	INC 	A
-	LD 		(TOP_BANK_HEIGHT), A
-TOP_BANK_INC_DONE:
-	JP 		TOP_BANK_DONE			; 'return'
+	LD 		(RIVER_WIDTH), A			; inc and save
 
-; dec top, min 0
-TOP_BANK_DEC:
-	LD 		A, (TOP_BANK_HEIGHT)
-	CP 		0
-	JP 		Z, TOP_BANK_DEC_DONE	; can't go below 8
+RIVER_WIDTH_INC_DONE:
+	JP 		RIVER_WIDTH_DONE			; 'return'
+
+; dec river
+RIVER_WIDTH_DEC:
+	LD 		A, (RIVER_WIDTH)
+	CP 		12
+	JP  	Z, RIVER_WIDTH_DEC_DONE		; min 12
 
 	DEC 	A
-	LD 		(TOP_BANK_HEIGHT), A	; dec and store
+	LD 		(RIVER_WIDTH), A			; inc and save
 
-TOP_BANK_DEC_DONE:
-	JP 		TOP_BANK_DONE			; 'return'
+RIVER_WIDTH_DEC_DONE:
+	JP 		RIVER_WIDTH_DONE			; 'return'
 
-; inc bottom, max 18
-BOTTOM_BANK_INC:
-	LD 		A, (BOTTOM_BANK_HEIGHT)
-	CP  	18 
-	JP 		Z, BOTTOM_BANK_INC_DONE
-
+; inc top bank
+TOP_BANK_WIDTH_INC:
+	LD 		A, (TOP_BANK_WIDTH)
 	INC 	A
-	LD 		(BOTTOM_BANK_HEIGHT), A
-BOTTOM_BANK_INC_DONE	
-	JP 		BOTTOM_BANK_DONE		; 'return'
+	LD 		(TOP_BANK_WIDTH), A			; dec and save
+	JP 		TOP_BANK_WIDTH_CHECK		; check top bank not too big before continuing to TOP_BANK_WIDTH_DONE
 
-; dec bottom, min 0
-BOTTOM_BANK_DEC:
-	LD 		A, (BOTTOM_BANK_HEIGHT)
-	CP 		0
-	JP 		Z, BOTTOM_BANK_DEC_DONE	; can't go below 0
+; dec top bank
+TOP_BANK_WIDTH_DEC:
+	LD 		A, (TOP_BANK_WIDTH)
+	CP 		0 
+	JP 		Z, TOP_BANK_WIDTH_DEC_DONE	; can't be less than 0
 
 	DEC 	A
-	LD 		(BOTTOM_BANK_HEIGHT), A ; dec and save
+	LD 		(TOP_BANK_WIDTH), A			; dec and save
 
+TOP_BANK_WIDTH_DEC_DONE:
+	JP 		TOP_BANK_WIDTH_DONE			; 'return'
 
-	LD 		(BOTTOM_BANK_HEIGHT), A
+; check top bank
+; river might force it to go smaller...
+TOP_BANK_WIDTH_CHECK:
+	LD 		A, (RIVER_WIDTH)
+	LD 		B, A						; B is river width
+	LD 		A, 48
+	SUB 	B							; A is what's left after river width
 
-BOTTOM_BANK_DEC_DONE:
-	JP 		BOTTOM_BANK_DONE		; 'return'
+	LD 		B, A 						; B is what's left after river width
 
+	LD 		A, (TOP_BANK_WIDTH)
+	LD 		C, A 						; C is top bank width
 
+	LD 		A, B 						; A is what's left after river
+
+	CP 		C 							; is what's left > top bank size?
+	JP 		NC, TOP_BANK_WIDTH_CHECK_DONE
+
+	LD 		(TOP_BANK_WIDTH), A 		; top bank is what's left
+
+TOP_BANK_WIDTH_CHECK_DONE:
+	JP 		TOP_BANK_WIDTH_DONE			; 'return'
 
 
 ; 56 x 11
@@ -186,25 +201,27 @@ TOP_BORDER_BUFFER_START_RIVER:
 	DEFS 	11 * 4, COL_GRN	; bottom bank
 
 ; procgen vars
-TOP_BANK_HEIGHT:
+TOP_BANK_WIDTH:
 	DEFB 	0
 
-BOTTOM_BANK_HEIGHT:
+RIVER_WIDTH:
+	DEFB 	48
+
+BOTTOM_BANK_WIDTH:
 	DEFB 	0
 
-RIVER_HEIGHT:
-	DEFB 	0
 
 ; jump tables
-TOP_BANK_JUMP_TABLE:
-	DEFW 	TOP_BANK_DONE
-	DEFW	TOP_BANK_DONE
-	DEFW	TOP_BANK_INC
-	DEFW 	TOP_BANK_DEC
+RIVER_WIDTH_JUMP_TABLE:
+	DEFW 	RIVER_WIDTH_DONE
+	DEFW	RIVER_WIDTH_DONE
+	DEFW	RIVER_WIDTH_INC
+	DEFW 	RIVER_WIDTH_DEC
 
-BOTTOM_BANK_JUMP_TABLE:
-	DEFW 	BOTTOM_BANK_DONE
-	DEFW	BOTTOM_BANK_DONE
-	DEFW	BOTTOM_BANK_INC
-	DEFW 	BOTTOM_BANK_DEC
+TOP_BANK_WIDTH_JUMP_TABLE:
+	DEFW 	TOP_BANK_WIDTH_CHECK
+	DEFW	TOP_BANK_WIDTH_CHECK
+	DEFW	TOP_BANK_WIDTH_INC
+	DEFW 	TOP_BANK_WIDTH_DEC
+
 
