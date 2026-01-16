@@ -5,6 +5,7 @@
 	INCLUDE "rr_start_screen.asm"
 	INCLUDE "rr_game_screen.asm"
 	INCLUDE "rr_maths.asm"
+	INCLUDE "rr_print_char_y_x.asm"
 	INCLUDE "rr_stack_render.asm"
 	INCLUDE "rr_speccy_defs.asm"
 	INCLUDE "rr_top_border_render_game.asm"
