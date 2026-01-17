@@ -1,118 +1,230 @@
 
 
-SB_BORDER_FONT_LUT:
-	DEFW 		SB_BORDER_FONT_0
-	DEFW 		SB_BORDER_FONT_1
-	DEFW 		SB_BORDER_FONT_2
-	DEFW 		SB_BORDER_FONT_3
-	DEFW 		SB_BORDER_FONT_4
-	DEFW 		SB_BORDER_FONT_5
-	DEFW 		SB_BORDER_FONT_6
-	DEFW 		SB_BORDER_FONT_7
-	DEFW 		SB_BORDER_FONT_8
-	DEFW 		SB_BORDER_FONT_9
+SB_BORDER_FONT_LUT_LEFT:
+	DEFW 		SB_BORDER_FONT_0_LEFT
+	DEFW 		SB_BORDER_FONT_1_LEFT
+	DEFW 		SB_BORDER_FONT_2_LEFT
+	DEFW 		SB_BORDER_FONT_3_LEFT
+	DEFW 		SB_BORDER_FONT_4_LEFT
+	DEFW 		SB_BORDER_FONT_5_LEFT
+	DEFW 		SB_BORDER_FONT_6_LEFT
+	DEFW 		SB_BORDER_FONT_7_LEFT
+	DEFW 		SB_BORDER_FONT_8_LEFT
+	DEFW 		SB_BORDER_FONT_9_LEFT
 
-SB_BORDER_FONT_0:
+SB_BORDER_FONT_0_LEFT:
 	DEFB 		0, 0, 0
 	DEFB 		0, 0, 0
-	DEFB 		0, 5, 0
-	DEFB 		0, 5, 0
-	DEFB 		0, 5, 0
-	DEFB 		0, 5, 0
-	DEFB 		0, 0, 0
-	DEFB 		0, 0, 0
-
-SB_BORDER_FONT_1:
-	DEFB 		5, 0, 5
-	DEFB 		0, 0, 5
-	DEFB 		5, 0, 5
-	DEFB 		5, 0, 5
-	DEFB 		5, 0, 5
-	DEFB 		5, 0, 5
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
 	DEFB 		0, 0, 0
 	DEFB 		0, 0, 0
 
-SB_BORDER_FONT_2:
-	DEFB 		0, 0, 0
-	DEFB 		0, 0, 0
-	DEFB 		5, 5, 0
-	DEFB 		5, 0, 5
-	DEFB 		5, 0, 5
-	DEFB 		0, 5, 5
-	DEFB 		0, 0, 0
-	DEFB 		0, 0, 0
-
-SB_BORDER_FONT_3:
-	DEFB 		0, 0, 0
-	DEFB 		0, 0, 0
-	DEFB 		5, 5, 0
-	DEFB 		5, 0, 0
-	DEFB 		5, 0, 0
-	DEFB 		5, 5, 0
+SB_BORDER_FONT_1_LEFT:
+	DEFB 		4, 0, 1
+	DEFB 		0, 0, 1
+	DEFB 		4, 0, 1
+	DEFB 		4, 0, 1
+	DEFB 		4, 0, 1
+	DEFB 		4, 0, 1
 	DEFB 		0, 0, 0
 	DEFB 		0, 0, 0
 
-SB_BORDER_FONT_4:
-	DEFB 		5, 5, 0
-	DEFB 		5, 0, 0
-	DEFB 		5, 0, 0
-	DEFB 		0, 5, 0
-	DEFB 		0, 0, 0
-	DEFB 		5, 0, 0
-	DEFB 		5, 5, 0
-	DEFB 		5, 5, 0
-
-SB_BORDER_FONT_5:
+SB_BORDER_FONT_2_LEFT:
 	DEFB 		0, 0, 0
 	DEFB 		0, 0, 0
-	DEFB 		0, 5, 5
-	DEFB 		5, 0, 5
-	DEFB 		5, 0, 5
-	DEFB 		5, 5, 0
+	DEFB 		4, 4, 0
+	DEFB 		4, 0, 1
+	DEFB 		4, 0, 1
+	DEFB 		0, 4, 1
 	DEFB 		0, 0, 0
 	DEFB 		0, 0, 0
 
-SB_BORDER_FONT_6:
-	DEFB 		5, 0, 0
-	DEFB 		0, 0, 0
-	DEFB 		0, 5, 5
-	DEFB 		0, 0, 5
-	DEFB 		0, 5, 0
-	DEFB 		0, 5, 0
-	DEFB 		0, 0, 0
-	DEFB 		5, 0, 5
-
-SB_BORDER_FONT_7:
+SB_BORDER_FONT_3_LEFT:
 	DEFB 		0, 0, 0
 	DEFB 		0, 0, 0
-	DEFB 		5, 0, 0
-	DEFB 		5, 0, 0
-	DEFB 		0, 0, 5
-	DEFB 		0, 0, 5
-	DEFB 		0, 5, 5
-	DEFB 		0, 5, 5
-
-SB_BORDER_FONT_8:
-	DEFB 		0, 0, 0
-	DEFB 		0, 0, 0
-	DEFB 		0, 5, 0
-	DEFB 		0, 5, 0
-	DEFB 		0, 0, 0
-	DEFB 		0, 5, 0
+	DEFB 		4, 4, 0
+	DEFB 		4, 0, 0
+	DEFB 		4, 0, 0
+	DEFB 		4, 4, 0
 	DEFB 		0, 0, 0
 	DEFB 		0, 0, 0
 
-SB_BORDER_FONT_9:
-	DEFB 		5, 0, 5
+SB_BORDER_FONT_4_LEFT:
+	DEFB 		4, 4, 0
+	DEFB 		4, 0, 0
+	DEFB 		4, 0, 0
+	DEFB 		0, 4, 0
 	DEFB 		0, 0, 0
-	DEFB 		0, 5, 0
-	DEFB 		0, 5, 0
-	DEFB 		5, 0, 0
-	DEFB 		5, 5, 0
+	DEFB 		4, 0, 0
+	DEFB 		4, 4, 0
+	DEFB 		4, 4, 0
+
+SB_BORDER_FONT_5_LEFT:
 	DEFB 		0, 0, 0
-	DEFB 		0, 0, 5
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 1
+	DEFB 		4, 0, 1
+	DEFB 		4, 0, 1
+	DEFB 		4, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_6_LEFT:
+	DEFB 		4, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 1
+	DEFB 		0, 0, 1
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		4, 0, 1
+
+SB_BORDER_FONT_7_LEFT:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		4, 0, 0
+	DEFB 		4, 0, 0
+	DEFB 		0, 0, 1
+	DEFB 		0, 0, 1
+	DEFB 		0, 4, 1
+	DEFB 		0, 4, 1
+
+SB_BORDER_FONT_8_LEFT:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_9_LEFT:
+	DEFB 		4, 0, 1
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		4, 0, 0
+	DEFB 		4, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 1
 
 
+
+SB_BORDER_FONT_LUT_RIGHT:
+	DEFW 		SB_BORDER_FONT_0_RIGHT
+	DEFW 		SB_BORDER_FONT_1_RIGHT
+	DEFW 		SB_BORDER_FONT_2_RIGHT
+	DEFW 		SB_BORDER_FONT_3_RIGHT
+	DEFW 		SB_BORDER_FONT_4_RIGHT
+	DEFW 		SB_BORDER_FONT_5_RIGHT
+	DEFW 		SB_BORDER_FONT_6_RIGHT
+	DEFW 		SB_BORDER_FONT_7_RIGHT
+	DEFW 		SB_BORDER_FONT_8_RIGHT
+	DEFW 		SB_BORDER_FONT_9_RIGHT
+
+SB_BORDER_FONT_0_RIGHT:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_1_RIGHT:
+	DEFB 		1, 0, 4
+	DEFB 		0, 0, 4
+	DEFB 		1, 0, 4
+	DEFB 		1, 0, 4
+	DEFB 		1, 0, 4
+	DEFB 		1, 0, 4
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_2_RIGHT:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		1, 4, 0
+	DEFB 		1, 0, 4
+	DEFB 		1, 0, 4
+	DEFB 		0, 4, 4
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_3_RIGHT:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		1, 4, 0
+	DEFB 		1, 0, 0
+	DEFB 		1, 0, 0
+	DEFB 		1, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_4_RIGHT:
+	DEFB 		1, 4, 0
+	DEFB 		1, 0, 0
+	DEFB 		1, 0, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		1, 0, 0
+	DEFB 		1, 4, 0
+	DEFB 		1, 4, 0
+
+SB_BORDER_FONT_5_RIGHT:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 4
+	DEFB 		1, 0, 4
+	DEFB 		1, 0, 4
+	DEFB 		1, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_6_RIGHT:
+	DEFB 		1, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 4
+	DEFB 		0, 0, 4
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		1, 0, 4
+
+SB_BORDER_FONT_7_RIGHT:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		1, 0, 0
+	DEFB 		1, 0, 0
+	DEFB 		0, 0, 4
+	DEFB 		0, 0, 4
+	DEFB 		0, 4, 4
+	DEFB 		0, 4, 4
+
+SB_BORDER_FONT_8_RIGHT:
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 0
+
+SB_BORDER_FONT_9_RIGHT:
+	DEFB 		1, 0, 4
+	DEFB 		0, 0, 0
+	DEFB 		0, 4, 0
+	DEFB 		0, 4, 0
+	DEFB 		1, 0, 0
+	DEFB 		1, 4, 0
+	DEFB 		0, 0, 0
+	DEFB 		0, 0, 4
 
 
 
