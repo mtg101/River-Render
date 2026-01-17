@@ -76,7 +76,7 @@ SPRITE_XOR_PREP:
 	LD 		A, (HL)
 	LD 		D, A				; DE points to sprite frame
 
-	LD 		(SPRITE_FRAME_ADDR), HL
+	LD 		(SPRITE_FRAME_ADDR), DE
 
 
 	LD		A, (SPRITE_Y)
@@ -107,16 +107,16 @@ SPRITE_XOR_RENDER:
 	Sprite_Xor
 	Sprite_Xor
 
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
+	Sprite_Xor
 
 	; Sprite_Xor
 	; Sprite_Xor

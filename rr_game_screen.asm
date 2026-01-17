@@ -362,30 +362,6 @@ GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 
 
 GAME_STACK_RENDER:
-	; waste time precalculating stuff while the beam gets going...
-	CALL 	SPRITE_XOR_PREP
-
-	LD 		(SPRITE_SCREEN_ADDR_TEMP), HL
-	LD 		(SPRITE_FRAME_ADDR_TEMP), DE
-
- 	LD 		A, (SPRITE_X_NEW)		
- 	LD		(SPRITE_X), A			; move to new position
-
-	CALL 	SPRITE_XOR_PREP			; prepping for next xor...
-
-	; swap stuff...
-	LD 		BC, (SPRITE_SCREEN_ADDR_TEMP)
-	LD 		(SPRITE_SCREEN_ADDR_TEMP), HL
-	LD 		(SPRITE_SCREEN_ADDR), BC
-
-	LD 		BC, (SPRITE_FRAME_ADDR_TEMP)
-	LD 		(SPRITE_FRAME_ADDR_TEMP), DE
-	LD 		(SPRITE_FRAME_ADDR), BC
-
-
-	; xor sprite off
- 	CALL 	SPRITE_XOR_RENDER
-
 	; DIY for RET
 	LD 		HL, GAME_STACK_RENDER_DONE
 	PUSH 	HL
@@ -393,16 +369,34 @@ GAME_STACK_RENDER:
 	; preserve SP
 	LD 		(STACK_POINTER_BACKUP), SP		
 
-	CALL 	STACK_RENDER_JUST_SCROLL
+	JP	 	STACK_RENDER_JUST_SCROLL
 
 GAME_STACK_RENDER_DONE:
-	; xor sprite on
-	LD 		HL, (SPRITE_SCREEN_ADDR_TEMP)
-	LD 		(SPRITE_SCREEN_ADDR), HL
-	LD 		HL, (SPRITE_FRAME_ADDR_TEMP)
-	LD 		(SPRITE_FRAME_ADDR), HL
+	; get where old sprite will be after scroll
+	LD 		A, (SPRITE_Y)
+	DEC 	A
+	LD 		(SPRITE_Y), A
 
+	CALL 	SPRITE_XOR_PREP
+	; xor sprite off
  	CALL 	SPRITE_XOR_RENDER
+
+	; restore y
+	LD 		A, (SPRITE_Y)
+	INC 	A
+	LD 		(SPRITE_Y), A
+
+	; now for xor on...
+ 	LD 		A, (SPRITE_X_NEW)		
+ 	LD		(SPRITE_X), A			; move to new position
+
+	CALL 	SPRITE_XOR_PREP			
+	CALL 	SPRITE_XOR_RENDER		; xor on
+
+	; hack border to see timings
+	LD 		A, COL_RED		
+	OUT		($FE), A		
+
 
 	JP 		GAME_ANIMATE_MAIN
 
@@ -418,8 +412,8 @@ GAME_JUMP_TABLE:
 GAME_FRAME:
 	DEFB 	0
 
-SPRITE_SCREEN_ADDR_TEMP:
+SPRITE_SCREEN_ADDR_OLD:
 	DEFW 	0
 
-SPRITE_FRAME_ADDR_TEMP:
+SPRITE_FRAME_ADDR_OLD:
 	DEFW 	0
