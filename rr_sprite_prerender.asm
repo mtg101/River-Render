@@ -126,8 +126,6 @@ SPRITE_XOR_RENDER:
 	; Sprite_Xor
 	; Sprite_Xor
 	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
 
 	; Sprite_Xor
 	; Sprite_Xor

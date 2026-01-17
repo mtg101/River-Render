@@ -394,8 +394,8 @@ GAME_STACK_RENDER_DONE:
 	CALL 	SPRITE_XOR_RENDER		; xor on
 
 	; hack border to see timings
-	LD 		A, COL_RED		
-	OUT		($FE), A		
+	; LD 		A, COL_RED		
+	; OUT		($FE), A		
 
 
 	JP 		GAME_ANIMATE_MAIN
