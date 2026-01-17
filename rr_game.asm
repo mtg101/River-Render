@@ -2,6 +2,51 @@
 
 
 
+
+
+GAME_PROCGEN:
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+	AND 	%00001111			; 1 in 16
+
+	CALL 	Z, GAME_ADD_RAPIDS
+
+	RET 						; GAME_PROCGEN
+
+
+GAME_ADD_RAPIDS:
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+
+	AND 	%00000111			; 0-7 
+	LD 		D, A
+
+	LD 		A, (NEXT_RNG)
+	AND 	%11000000			
+
+	RLA
+	RLA
+	RLA							; 0-3
+
+	ADD 	A, D				; 0-11
+
+	LD 		D, 0
+	LD 		E, A				; 0-11 in DE
+
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+
+	LD 		HL, SCREEN_BASE_191 + 2
+	ADD		HL, DE				; random bottom row
+
+	LD 		(HL), A				; random byte into random position
+
+
+	RET 						; GAME_ADD_RAPIDS
+
+
+
+
 ; Address (Hex)	Binary (High Byte)	Bit 0	Bit 1	Bit 2	Bit 3	Bit 4
 ; $FEFE	1111 1110	SHIFT	Z	X	C	V
 ; $FDFE	1111 1101	A	S	D	F	G

@@ -2,19 +2,18 @@
 	INCLUDE 	"rr_stack_render_macros.asm"
 
 
-STACK_RENDER:														
-	; push any registers we need to preserve...
-	; none for now
 
+; caller has to save SP before calling
+; and ensure return address (main loop) is on top of stack
+; for the 'fake' return
+STACK_RENDER_LOOP:		
 ; hack border to see timings
 	; LD 		A, COL_BLK			
 	; OUT		($FE), A		
 
-	; preserve SP
-	LD 			(STACK_POINTER_BACKUP), SP							
-
-
 	Stack_Row_Pixel	0	,	192		; buffer for loop
+
+STACK_RENDER_JUST_SCROLL:
 	Stack_Row_Pixel	1	,	0
 	Stack_Row_Pixel	2	,	1
 	Stack_Row_Pixel	3	,	2
@@ -208,7 +207,6 @@ STACK_RENDER:
 	Stack_Row_Pixel	191	,	190
 	Stack_Row_Pixel	192	,	191
 
-
 	; restore SP
 	LD 			SP, (STACK_POINTER_BACKUP)		
 
@@ -216,8 +214,7 @@ STACK_RENDER:
 	; LD 		A, COL_YEL		
 	; OUT		($FE), A		
 
-;	RET			; STACK_RENDER
-	JP		START_ANIMATE_MAIN
+	RET			; STACK_RENDER
 
 
 STACK_POINTER_BACKUP:
