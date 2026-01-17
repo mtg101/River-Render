@@ -18,20 +18,27 @@ GAME_ADD_RAPIDS:
     CALL  	RNG
     LD    	A, (NEXT_RNG)
 
-	AND 	%00000111			; 0-7 
-	LD 		D, A
 
-	LD 		A, (NEXT_RNG)
-	AND 	%11000000			
 
-	RLA
-	RLA
-	RLA							; 0-3
 
-	ADD 	A, D				; 0-11
+
+	LD L, A             ; Put random byte in L
+    LD H, 0             ; HL = 0 to 255
+    
+    ; We want to do (HL * 12) / 256
+    ; Multiplying by 12:
+    ADD HL, HL          ; HL * 2
+    ADD HL, HL          ; HL * 4
+    LD D, H             ; Save (val * 4) in DE
+    LD E, L
+    ADD HL, HL          ; HL * 8
+    ADD HL, DE          ; HL = (val * 8) + (val * 4) = val * 12
+
+	; Dividing by 256 is just taking the High Byte (H)
+    ; H now contains a value from 0 to 11.
 
 	LD 		D, 0
-	LD 		E, A				; 0-11 in DE
+	LD 		E, H				; 0-11 in DE
 
     CALL  	RNG
     LD    	A, (NEXT_RNG)
