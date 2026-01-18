@@ -227,7 +227,7 @@ GAME_ADD_RAPIDS:
     CALL  	RNG
     LD    	A, (NEXT_RNG)
 
-	LD 		HL, SCREEN_BASE_191 + 2
+	LD 		HL, SCREEN_BASE_191 + 3
 	ADD		HL, DE				; random bottom row
 
 	LD 		(HL), A				; random byte into random position
