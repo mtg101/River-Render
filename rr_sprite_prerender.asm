@@ -122,7 +122,7 @@ SPRITE_XOR_RENDER:
 
 SPRITE_MOVE_LEFT:
 	LD 		A, (SPRITE_X_NEW)
-	CP 		80								; 8 * 10 = 80
+	CP 		88								; 8 * 11 = 88
 	RET	 	Z								; edge - SPRITE_MOVE_LEFT
 
 	DEC 	A 
@@ -131,7 +131,7 @@ SPRITE_MOVE_LEFT:
 
 SPRITE_MOVE_RIGHT:
 	LD 		A, (SPRITE_X_NEW)
-	CP 		159								; 255 - 80 from above - 16 width = 159
+	CP 		152								; 255 - 88 from above - 16 width = 151 + 1
 	RET	 	Z								; edge - SPRITE_MOVE_RIGHT
 
 	INC 	A 

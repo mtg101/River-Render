@@ -238,7 +238,20 @@ GAME_STACK_RENDER:
 
 	JP	 	STACK_RENDER_JUST_SCROLL
 
+
+
 GAME_STACK_RENDER_DONE:
+
+	; ev 8 frames...
+	LD 		A, (GAME_FRAME)
+	AND 	%00000111
+	CP 		0
+	JP 		NZ, NOT_ATTR_TIME
+
+	CALL 	STACK_RENDER_ATTRS		; no tricks just call
+
+
+NOT_ATTR_TIME:
 	; get where old sprite will be after scroll
 	LD 		A, (SPRITE_Y)
 	DEC 	A

@@ -217,6 +217,44 @@ STACK_RENDER_JUST_SCROLL:
 	RET			; STACK_RENDER
 
 
+
+STACK_RENDER_ATTRS:
+	; store SP
+	LD 			(STACK_POINTER_BACKUP)		, SP
+
+	Stack_Row_Attr		1, 0
+	Stack_Row_Attr		2, 1
+	Stack_Row_Attr		3, 2
+	Stack_Row_Attr		4, 3
+	Stack_Row_Attr		5, 4
+	Stack_Row_Attr		6, 5
+	Stack_Row_Attr		7, 6
+	Stack_Row_Attr		8, 7
+
+	Stack_Row_Attr		9, 8
+	Stack_Row_Attr		10, 9
+	Stack_Row_Attr		11, 10
+	Stack_Row_Attr		12, 11
+	Stack_Row_Attr		13, 12
+	Stack_Row_Attr		14, 13
+	Stack_Row_Attr		15, 14
+	Stack_Row_Attr		16, 15
+
+	Stack_Row_Attr		17, 16
+	Stack_Row_Attr		18, 17
+	Stack_Row_Attr		19, 18
+	Stack_Row_Attr		20, 19
+	Stack_Row_Attr		21, 20
+	Stack_Row_Attr		22, 21
+	Stack_Row_Attr		23, 22
+
+	; restore SP
+	LD 			SP, (STACK_POINTER_BACKUP)		
+
+	RET 						; STACK_RENDER_ATTRS
+
+
+
 STACK_POINTER_BACKUP:
 	DEFW 		0
 

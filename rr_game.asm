@@ -232,6 +232,12 @@ GAME_ADD_RAPIDS:
 
 	LD 		(HL), A				; random byte into random position
 
+; attr hack test
+;	LD 		HL, ATTR_BASE_23 + 2
+;	ADD		HL, DE				; random bottom row
+;	LD 		(HL), A				; random attr into random position
+
+
 
 	RET 						; GAME_ADD_RAPIDS
 

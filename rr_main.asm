@@ -2,12 +2,12 @@
 	DEVICE ZXSPECTRUM48 			; needed for SNA export (must be tab indented)
 	ORG 	$8000					; the uncontended 32KiB
 	
+	INCLUDE "rr_speccy_defs.asm"
 	INCLUDE "rr_start_screen.asm"
 	INCLUDE "rr_game_screen.asm"
 	INCLUDE "rr_maths.asm"
 	INCLUDE "rr_print_char_y_x.asm"
 	INCLUDE "rr_stack_render.asm"
-	INCLUDE "rr_speccy_defs.asm"
 	INCLUDE "rr_top_border_render_game.asm"
 	INCLUDE "rr_top_border_render_start.asm"
 	INCLUDE "rr_top_border_buffer_game.asm"
@@ -19,7 +19,7 @@
 	
 START:
 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
-	CALL 	START_MAIN				; go to start screen
+;	CALL 	START_MAIN				; go to start screen
 
 ; hack call game directly while developing...
 	CALL 	GAME_MAIN				; go to game screen
