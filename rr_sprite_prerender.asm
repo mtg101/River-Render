@@ -95,7 +95,7 @@ SPRITE_XOR_RENDER:
 	LD 		HL, (SPRITE_SCREEN_ADDR)
 	LD 		DE, (SPRITE_FRAME_ADDR)
 
-; 32 rows
+; 20 rows (all we have time for without optimization, and optimizations are for col stack effects!)
 	Sprite_Xor
 	Sprite_Xor
 	Sprite_Xor
@@ -117,18 +117,6 @@ SPRITE_XOR_RENDER:
 	Sprite_Xor
 	Sprite_Xor
 	Sprite_Xor
-
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-	; Sprite_Xor
-
-	; Sprite_Xor
-	; Sprite_Xor
 
 	RET 						; SPRITE_XOR_RENDER
 
@@ -156,7 +144,7 @@ SPRITE_X:
 
 ; keys will control this new X
 SPRITE_X_NEW:
-	DEFB	100
+	DEFB	120
 
 SPRITE_Y:
 	DEFB 	4
