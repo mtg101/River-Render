@@ -15,10 +15,10 @@
 
 		; flip to shadow registers
 		EXX 															
-		EX AF															
+;		EX AF															
 																			
 		; pop from source to shadow registers
-		POP 		AF 													
+;		POP 		AF 													
 		POP 		BC 													
 		POP 		DE 													
 		POP 		HL													
@@ -32,12 +32,12 @@
 		PUSH 		HL 													
 		PUSH 		DE 													
 		PUSH 		BC 													
-		PUSH 		AF 													
+;		PUSH 		AF 													
 																			
 
 		; flip back to regular registers
 		EXX 															
-		EX AF															
+;		EX AF															
 																			
 
 		; push from registers to screen

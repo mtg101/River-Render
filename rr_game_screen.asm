@@ -51,14 +51,13 @@ GAME_CLEAR_RIVER:
 	LD 		C, %00100100			; green on green bank
 
 
-	; get row 0 + 8 addr
-	LD 		HL, ATTR_START + 8
+	LD 		HL, ATTR_START + 9
 
 	LD 		B, 24 					; 24 attr rows
-	LD 		DE, 17					; 16 along, plus one to avoid an INC :)
+	LD 		DE, 19					; 18 along, plus one to avoid an INC :)
 
 GAME_CLEAR_RIVER_ATTR_LOOP:
-	; LD 16 attrs
+	; LD 14 attrs
 	LD 		(HL), C
 	INC 	HL
 	LD 		(HL), C
@@ -89,10 +88,6 @@ GAME_CLEAR_RIVER_ATTR_LOOP:
 	LD 		(HL), A
 	INC 	HL
 	LD 		(HL), A
-	INC 	HL
-	LD 		(HL), C
-	INC 	HL
-	LD 		(HL), C
 
 	ADD 	HL, DE
 
@@ -104,10 +99,10 @@ GAME_CLEAR_RIVER_ATTR_LOOP:
 	LD 		HL, SCREEN_START + 8
 
 	LD 		B, 192 					; 24 pixel rows
-	LD 		DE, 17					; 16 along, plus one to avoid an INC :)
+	LD 		DE, 19					; 18 along, plus one to avoid an INC :)
 
 GAME_CLEAR_RIVER_PIXEL_LOOP:
-	; LD 16 pixel bytes
+	; LD 14 pixel bytes
 	LD 		(HL), 0
 	INC 	HL
 	LD 		(HL), 0
@@ -135,10 +130,6 @@ GAME_CLEAR_RIVER_PIXEL_LOOP:
 	LD 		(HL), 0
 	INC 	HL
 
-	LD 		(HL), 0
-	INC 	HL
-	LD 		(HL), 0
-	INC 	HL
 	LD 		(HL), 0
 	INC 	HL
 	LD 		(HL), 0
@@ -151,14 +142,14 @@ GAME_CLEAR_RIVER_PIXEL_LOOP:
 	LD 		A, %00001111			; white on blue river
 	LD 		C, %00001100			; green on blue bank
 
-	; get row 0 + 8 addr
-	LD 		HL, ATTR_START + 8
+
+	LD 		HL, ATTR_START + 9
 
 	LD 		B, 24 					; 24 attr rows
-	LD 		DE, 17					; 16 along, plus one to avoid an INC :)
+	LD 		DE, 19					; 18 along, plus one to avoid an INC :)
 
 GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
-	; LD 16 attrs
+	; LD 14 attrs
 	LD 		(HL), C
 	INC 	HL
 	LD 		(HL), C
@@ -186,10 +177,6 @@ GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 	LD 		(HL), A
 	INC 	HL
 
-	LD 		(HL), A
-	INC 	HL
-	LD 		(HL), A
-	INC 	HL
 	LD 		(HL), C
 	INC 	HL
 	LD 		(HL), C

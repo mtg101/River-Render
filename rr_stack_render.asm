@@ -207,7 +207,6 @@ STACK_RENDER_JUST_SCROLL:
 	Stack_Row_Pixel	191	,	190
 	Stack_Row_Pixel	192	,	191
 
-
 	; restore SP
 	LD 			SP, (STACK_POINTER_BACKUP)		
 

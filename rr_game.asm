@@ -120,7 +120,7 @@ GAME_RENDER_BANKS:
 	CALL 	GET_16_PIXEL_BAR_RIGHT			; Output: D = Left Byte, E = Right Byte
 
 	; render right
-	LD 		HL, SCREEN_BASE_191 + 14		; inner right
+	LD 		HL, SCREEN_BASE_191 + 12		; inner right
 	LD 		(HL), E							; pixels
 
 	INC 	HL								; rightmost
@@ -219,33 +219,15 @@ BAR_TABLE_RIGHT:
 GAME_ADD_RAPIDS:
     CALL  	RNG
     LD    	A, (NEXT_RNG)
-
-	; 0-11 maths...
-	LD L, A             ; Put random byte in L
-    LD H, 0             ; HL = 0 to 255
-    
-    ; We want to do (HL * 10) / 256
-    ; Multiplying by 10:
-	ADD HL, HL          ; HL * 2
-    LD D, H             ; Save (val * 2) in DE
-    LD E, L
-    ADD HL, HL          ; HL * 4
-    ADD HL, HL          ; HL * 8
-    ADD HL, DE          ; HL = (val * 8) + (val * 2) = val * 10
-    
-    ; The result is in H (effectively HL / 256)
-    ; H now contains 0-9
-
-	; Dividing by 256 is just taking the High Byte (H)
-    ; H now contains a value from 0 to 11.
+	AND 	%00000111			; 0-7
 
 	LD 		D, 0
-	LD 		E, H				; 0-11 in DE
+	LD 		E, A				; 0-7 in DE
 
     CALL  	RNG
     LD    	A, (NEXT_RNG)
 
-	LD 		HL, SCREEN_BASE_191 + 3
+	LD 		HL, SCREEN_BASE_191 + 2
 	ADD		HL, DE				; random bottom row
 
 	LD 		(HL), A				; random byte into random position
