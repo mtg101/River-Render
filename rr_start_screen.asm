@@ -76,4 +76,4 @@ START_FRAME:
 
 
 START_PRINT_STRING:
-	DEFB	"SPACE to board!", 0
+	DEFB	"SPACE to boat!", 0
