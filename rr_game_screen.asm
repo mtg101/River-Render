@@ -5,15 +5,18 @@ GAME_MAIN:
 	CALL 	SPRITE_XOR_RENDER			; show it initially
 
 GAME_ANIMATE_MAIN:
+	; update frame counter
+	LD 		A, (GAME_FRAME)
+	INC 	A
+	LD 		(GAME_FRAME), A
+
 	HALT							; wait for vsync (fired after bottom border, start of vblank)
 
 	CALL	VBLANK_PERIOD_WORK		; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
 	CALL	TOP_BORDER_RENDER_GAME	; timining-critical flipping of top border colours
 
-
 	; boarder or screen scroll
     LD    	A, (GAME_FRAME)
-	LD 		B, A				; store in B for incrementing later
 	AND		%00000001			; 0-1
 
 	; jump table
@@ -23,14 +26,10 @@ GAME_ANIMATE_MAIN:
 	LD 		DE, GAME_JUMP_TABLE
 	ADD 	HL, DE				; points to where to call
 
-	LD 		A, (HL)				; low byt eof addr
+	LD 		A, (HL)				; low byte of addr
 	INC 	HL
 	LD		H, (HL)				; high byte
 	LD 		L, A				; HL now has dest addr
-
-	INC 	B 
-	LD 		A, B
-	LD 		(GAME_FRAME), A 	; increment frame counter
 
 	JP  	(HL)				; quick jump
 
@@ -42,6 +41,7 @@ USER_AND_BUFFER:
  	CALL	UPDATE_BORDER_BUFFER_GAME
  	CALL 	USER_INPUT
 	CALL  	GAME_PROCGEN
+
 
 	JP 		GAME_ANIMATE_MAIN	
 
@@ -242,13 +242,14 @@ GAME_STACK_RENDER:
 
 GAME_STACK_RENDER_DONE:
 
-	; ev 8 frames...
+	; ev 8*2=16 frames... 
 	LD 		A, (GAME_FRAME)
-	AND 	%00000111
+	AND 	%00001111
 	CP 		0
 	JP 		NZ, NOT_ATTR_TIME
 
 	CALL 	STACK_RENDER_ATTRS		; no tricks just call
+	CALL 	UPDATE_ATTR_SCOREBOARD	; countdown until can do next colour
 
 
 NOT_ATTR_TIME:
@@ -276,7 +277,6 @@ NOT_ATTR_TIME:
 	; hack border to see timings
 	; LD 		A, COL_RED		
 	; OUT		($FE), A		
-
 
 	JP 		GAME_ANIMATE_MAIN
 

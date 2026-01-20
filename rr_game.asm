@@ -229,15 +229,18 @@ GAME_ADD_RAPIDS:
 
 	LD 		HL, SCREEN_BASE_191 + 3
 	ADD		HL, DE				; random bottom row
-
 	LD 		(HL), A				; random byte into random position
 
-; attr hack test
-;	LD 		HL, ATTR_BASE_23 + 2
-;	ADD		HL, DE				; random bottom row
-;	LD 		(HL), A				; random attr into random position
+	LD 		HL, ATTR_BASE_23 + 3
+	ADD		HL, DE				
+	LD		A, %00001111		; white on blue
+	LD 		(HL), A				; and the attr
 
 
+	LD 		HL, GAME_ATTR_SCOREBOARD
+	ADD		HL, DE				
+	LD 		A, 1 				; only 1 for single-row rapids
+	LD 		(HL), A				; and the scoreboard
 
 	RET 						; GAME_ADD_RAPIDS
 
@@ -301,6 +304,22 @@ USER_INPUT:
 
 	RET 							; USER_INPUT
 
+UPDATE_ATTR_SCOREBOARD:
+	LD 		HL, GAME_ATTR_SCOREBOARD
+	LD 		B, 14
+UPDATE_ATTR_SCOREBOARD_LOOP:
+	LD 		A, (HL)
+	CP 		0
+	JP 		Z, UPDATE_ATTR_SCOREBOARD_LOOP_NEXT
+
+	DEC 	A
+	LD 		(HL), A 				; dec and save
+
+UPDATE_ATTR_SCOREBOARD_LOOP_NEXT:
+	INC 	HL						; nextbyte
+	DJNZ 	UPDATE_ATTR_SCOREBOARD_LOOP
+
+	RET 							; UPDATE_ATTR_SCOREBOARD
 
 GAME_BANK_LEFT:
 	DEFB 	0
@@ -308,6 +327,10 @@ GAME_BANK_LEFT:
 GAME_BANK_RIGHT:
 	DEFB 	0
 
+; each byte stores the countdown until attrs are free for new attr in col
+; (might add second one for which colour later...)
+GAME_ATTR_SCOREBOARD:
+	DEFS 	14
 
 ; jump tables
 GAME_BANK_JUMP_TABLE_LEFT:
