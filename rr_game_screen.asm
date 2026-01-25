@@ -261,8 +261,8 @@ NOT_ATTR_TIME:
 	CALL 	SPRITE_XOR_RENDER_ON
 
 	; hack border to see timings
-	LD 		A, COL_WHT		
-	OUT		($FE), A		
+	; LD 		A, COL_WHT		
+	; OUT		($FE), A		
 
 	JP 		GAME_ANIMATE_MAIN
 
@@ -272,8 +272,7 @@ NOT_ATTR_TIME:
 ; jump table
 GAME_JUMP_TABLE:
 	DEFW 	GAME_STACK_RENDER
-	DEFW 	GAME_STACK_RENDER
-;	DEFW 	USER_AND_BUFFER
+	DEFW 	USER_AND_BUFFER
 
 ; screen frame counter
 SCREEN_FRAME:

@@ -7,13 +7,15 @@
 ; and ensure return address (main loop) is on top of stack
 ; for the 'fake' return
 STACK_RENDER_LOOP:		
-; hack border to see timings
-	; LD 		A, COL_BLK			
-	; OUT		($FE), A		
-
 	Stack_Row_Pixel	0	,	192		; buffer for loop
 
 STACK_RENDER_JUST_SCROLL:
+; hack border to see timings
+	; PUSH 	AF
+	; LD 		A, COL_BLK			
+	; OUT		($FE), A		
+	; POP		AF
+
 	Stack_Row_Pixel	1	,	0
 	Stack_Row_Pixel	2	,	1
 	Stack_Row_Pixel	3	,	2
@@ -219,8 +221,8 @@ STACK_RENDER_JUST_SCROLL:
 	LD 			SP, (STACK_POINTER_BACKUP)		
 
 ; hack border to see timings
-	LD 		A, COL_YEL		
-	OUT		($FE), A		
+	; LD 		A, COL_YEL		
+	; OUT		($FE), A		
 
 	RET			; STACK_RENDER
 
@@ -261,8 +263,8 @@ STACK_RENDER_ATTRS:
 	LD 			SP, (STACK_POINTER_BACKUP)		
 
 ; hack border to see timings
-	LD 		A, COL_CYN
-	OUT		($FE), A		
+	; LD 		A, COL_CYN
+	; OUT		($FE), A		
 
 	RET 						; STACK_RENDER_ATTRS
 

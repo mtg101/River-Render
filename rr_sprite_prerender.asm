@@ -44,20 +44,6 @@
 		DEC 	HL
 		DEC 	HL					; back to first column ready to move to next row
 
-	; inline version of Pixel_Address_Down from vector_output.asm
-		INC 	H					; Go down onto the next pixel line
-		LD 		A, H				; Check if we have gone onto next character boundary
-		AND 	7
-		JP 		NZ, .PIXEL_XOR_DONE ; No, so skip the next bit
-		LD 		A, L				; Go onto the next character line
-		ADD 	A, 32
-		LD 		L, A
-		JP	 	C, .PIXEL_XOR_DONE	; Check if we have gone onto next third of screen
-		LD 		A, H				; Yes, so go onto next third
-		SUB 	8
-		LD 		H, A
-.PIXEL_XOR_DONE:
-
 	ENDM
 
 SPRITE_XOR_RENDER_OFF:
@@ -103,9 +89,9 @@ SPRITE_XOR_RENDER_OFF:
 	Sprite_Xor 	$4640
 
 	Sprite_Xor 	$4740
-	; Sprite_Xor 	$4060
-	; Sprite_Xor 	$4160
-	; Sprite_Xor 	$4260
+	Sprite_Xor 	$4060
+	Sprite_Xor 	$4160
+	Sprite_Xor 	$4260
 
 	RET 						; SPRITE_XOR_RENDER_OFF
 
@@ -150,9 +136,9 @@ SPRITE_XOR_RENDER_ON:
 	Sprite_Xor 	$4740
 
 	Sprite_Xor 	$4060
-	; Sprite_Xor 	$4160
-	; Sprite_Xor 	$4260
-	; Sprite_Xor 	$4360
+	Sprite_Xor 	$4160
+	Sprite_Xor 	$4260
+	Sprite_Xor 	$4360
 
 	RET 						; SPRITE_XOR_RENDER_ON
 
