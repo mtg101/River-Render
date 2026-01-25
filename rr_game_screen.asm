@@ -241,7 +241,6 @@ GAME_STACK_RENDER:
 
 
 GAME_STACK_RENDER_DONE:
-
 	; ev 8*2=16 frames... 
 	LD 		A, (SCREEN_FRAME)
 	AND 	%00001111
@@ -276,10 +275,6 @@ GAME_JUMP_TABLE:
 
 ; screen frame counter
 SCREEN_FRAME:
-	DEFB 	0
-
-; game frame counter
-GAME_FRAME:
 	DEFB 	0
 
 SPRITE_SCREEN_ADDR_OLD:

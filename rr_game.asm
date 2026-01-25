@@ -5,8 +5,18 @@
 
 
 GAME_PROCGEN:
-
+	; banks always move
 	CALL 	GAME_MOVE_BANKS
+
+	; ev 8*2=16 frames... before stack does on 0, so %000111
+	LD 		A, (SCREEN_FRAME)
+	AND 	%00001111
+	CP 		%00001111
+	JP 		NZ, NOT_RAPIDS_TIME
+
+	CALL 	GAME_ADD_RAPIDS
+
+NOT_RAPIDS_TIME:
 
 	RET 						; GAME_PROCGEN
 
@@ -214,23 +224,30 @@ BAR_TABLE_RIGHT:
 GAME_ADD_RAPIDS:
     CALL  	RNG
     LD    	A, (NEXT_RNG)
+	AND 	%11100000			; 1 in 8
+	RET 	NZ					; GAME_ADD_RAPIDS
+
+    LD    	A, (NEXT_RNG)
 	AND 	%00000111			; 0-7
 
 	LD 		D, 0
 	LD 		E, A				; 0-7 in DE
 
+
+
+
     CALL  	RNG
     LD    	A, (NEXT_RNG)
 
-	LD 		HL, SCREEN_BASE_191 + 3
+	LD 		HL, SCREEN_BASE_192 + 3
 	ADD		HL, DE				; random bottom row
 	LD 		(HL), A				; random byte into random position
 
+	; bottom attr to move into
 	LD 		HL, ATTR_BASE_23 + 3
 	ADD		HL, DE				
 	LD		A, %00001111		; white on blue
 	LD 		(HL), A				; and the attr
-
 
 	LD 		HL, GAME_ATTR_SCOREBOARD
 	ADD		HL, DE				

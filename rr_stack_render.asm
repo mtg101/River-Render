@@ -209,13 +209,7 @@ STACK_RENDER_JUST_SCROLL:
 	Stack_Row_Pixel	191	,	190
 	
 	Stack_Row_Pixel	192	,	191		; buffer
-	Stack_Row_Pixel	193	,	192		; buffer
-	Stack_Row_Pixel	194	,	193		; buffer
-	Stack_Row_Pixel	195	,	194		; buffer
-	Stack_Row_Pixel	196	,	195		; buffer
-	Stack_Row_Pixel	197	,	196		; buffer
-	Stack_Row_Pixel	198	,	197		; buffer
-	Stack_Row_Pixel	199	,	198		; buffer
+	Stack_Row_Pixel	193	,	192		; clears buffer with one simple trick :)
 
 	; restore SP
 	LD 			SP, (STACK_POINTER_BACKUP)		
@@ -250,14 +244,12 @@ STACK_RENDER_ATTRS:
 	Stack_Row_Attr		16, 15
 
 	Stack_Row_Attr		17, 16
-	; Stack_Row_Attr		18, 17
-	; Stack_Row_Attr		19, 18
-	; Stack_Row_Attr		20, 19
-	; Stack_Row_Attr		21, 20
-	; Stack_Row_Attr		22, 21
-	; Stack_Row_Attr		23, 22
-
-	Stack_Row_Attr		24, 23		; buffer
+	Stack_Row_Attr		18, 17
+	Stack_Row_Attr		19, 18
+	Stack_Row_Attr		20, 19
+	Stack_Row_Attr		21, 20
+	Stack_Row_Attr		22, 21
+	Stack_Row_Attr		23, 22
 
 	; restore SP
 	LD 			SP, (STACK_POINTER_BACKUP)		
@@ -267,8 +259,6 @@ STACK_RENDER_ATTRS:
 	; OUT		($FE), A		
 
 	RET 						; STACK_RENDER_ATTRS
-
-
 
 STACK_POINTER_BACKUP:
 	DEFW 		0
