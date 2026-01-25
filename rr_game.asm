@@ -269,17 +269,6 @@ GAME_ADD_RAPIDS:
 ; $BFFE	1011 1111	ENTER	L	K	J	H
 ; $7FFE	0111 1111	SPACE	SYM	M	N	B
 USER_INPUT:
-	LD 		BC, $FEFE				; SHIFT	Z	X	C	V
-	IN 		A, (C)
-
-	PUSH	AF
-	BIT 	1, A 					; z
-	CALL 	Z, BORDER_BUFFER_LIVES_DEC
-	POP 	AF
-
-	BIT 	2, A 					; z
-	CALL 	Z, BORDER_BUFFER_LIVES_INC
-
 	LD 		BC, $FBFE				; Q	W	E	R	T
 	IN 		A, (C)
 
@@ -290,29 +279,6 @@ USER_INPUT:
 
 	BIT 	0, A 					; q
 	CALL 	Z, SPRITE_MOVE_LEFT
-
-	LD 		BC, $DFFE				; P	O	I	U	Y
-	IN 		A, (C)
-
-	PUSH	AF
-	BIT 	1, A 					; o
-	CALL 	Z, BORDER_BUFFER_SCORE_INC
-	POP 	AF
-
-	BIT 	0, A 					; p
-	CALL 	Z, BORDER_BUFFER_ENERGY_INC
-
-	LD 		BC, $BFFE				; ENTER	L	K	J	H
-	IN 		A, (C)
-
-	PUSH	AF
-	BIT 	2, A 					; k
-	CALL 	Z, BORDER_BUFFER_SCORE_DEC
-	POP 	AF
-
-	BIT 	1, A 					; l
-	CALL 	Z, BORDER_BUFFER_ENERGY_DEC
-
 
 	RET 							; USER_INPUT
 
