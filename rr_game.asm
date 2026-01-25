@@ -8,7 +8,7 @@ GAME_PROCGEN:
 	; banks always move
 	CALL 	GAME_MOVE_BANKS
 
-	; ev 8*2=16 frames... before stack does on 0, so %000111
+	; ev 8*2=16 frames... before stack does on 0, so %00001111
 	LD 		A, (SCREEN_FRAME)
 	AND 	%00001111
 	CP 		%00001111

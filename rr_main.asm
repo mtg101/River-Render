@@ -25,7 +25,6 @@ START:
 	CALL 	GAME_MAIN				; go to game screen
 
 
-
 ; 8 scanline * 224 = 1,752 t-states (minus some for alignment, push/pop, calls, etc...)
 ; we use it to flicker a window's colour based on pre-calculated stuff 
 VBLANK_PERIOD_WORK:					
