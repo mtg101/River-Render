@@ -246,7 +246,7 @@ GAME_STACK_RENDER_DONE:
 	LD 		A, (SCREEN_FRAME)
 	AND 	%00001111
 	CP 		0
-;	JP 		NZ, NOT_ATTR_TIME
+	JP 		NZ, NOT_ATTR_TIME
 
 	CALL 	STACK_RENDER_ATTRS		; no tricks just call
 	CALL 	UPDATE_ATTR_SCOREBOARD	; countdown until can do next colour
