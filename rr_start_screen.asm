@@ -2,7 +2,7 @@
 START_MAIN:
 	LD		A, 0
 	LD		(PRINT_AT_Y), A
-	LD		A, 9
+	LD		A, 12
 	LD		(PRINT_AT_X), A
 	LD		HL, START_PRINT_STRING
 
@@ -15,13 +15,10 @@ START_ANIMATE_MAIN:
 	CALL	VBLANK_PERIOD_WORK		; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
 	CALL	TOP_BORDER_RENDER_START	; timining-critical flipping of top border colours
 
-;	CALL	UPDATE_BORDER_BUFFER_START
-;	CALL	STACK_RENDER
-
 	; check for space pressed
-	LD		BC, $7FFE				; space to b (space in bit 0)
+	LD		BC, $7FFE				; space to b (b in bit 4)
 	IN		A, (C)					; read keys
-	BIT		0, A					; space is bit 0 (1 means key not pressed, 0 pressed)
+	BIT		4, A					; b is bit 4 (1 means key not pressed, 0 pressed)
 	JP		Z, GAME_MAIN			; go to the game...
 
 	; boarder or screen scroll
@@ -73,7 +70,5 @@ START_JUMP_TABLE:
 START_FRAME:
 	DEFB 	0
 
-
-
 START_PRINT_STRING:
-	DEFB	"SPACE to boat!", 0
+	DEFB	"B TO BOAT", 0

@@ -18,7 +18,7 @@
 	INCLUDE "rr_vector_output.asm"
 	
 START:
-	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
+ 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
 ;	CALL 	START_MAIN				; go to start screen
 
 ; hack call game directly while developing...
