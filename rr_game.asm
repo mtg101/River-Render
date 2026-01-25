@@ -5,11 +5,6 @@
 
 
 GAME_PROCGEN:
-    CALL  	RNG
-    LD    	A, (NEXT_RNG)
-	AND 	%00001111			; 1 in 16
-
-	CALL 	Z, GAME_ADD_RAPIDS
 
 	CALL 	GAME_MOVE_BANKS
 

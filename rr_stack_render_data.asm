@@ -1,7 +1,7 @@
 ; extra row buffer for loop cycle
 RENDER_ROW_BUFFER:
-    DEFS    16                  ; 14 +2 for some reason
-                                ; 14 ends upcorrupting next 2 bytes (attr memory)
+    DEFS    (14*8)+2               ; 14 * 8 rows +2 for some reason
+                                ; +2 prevents orrupting next 2 bytes (attr memory)...
 
 SCREEN_BASE_0 = $4000	 + 9
 SCREEN_BASE_1 = $4100	 + 9
@@ -220,6 +220,14 @@ SCREEN_BASE_190 = $56E0	 + 9
 SCREEN_BASE_191 = $57E0	 + 9
 	
 SCREEN_BASE_192 = RENDER_ROW_BUFFER
+SCREEN_BASE_193 = SCREEN_BASE_192 + 14
+SCREEN_BASE_194 = SCREEN_BASE_193 + 14
+SCREEN_BASE_195 = SCREEN_BASE_194 + 14
+SCREEN_BASE_196 = SCREEN_BASE_195 + 14
+SCREEN_BASE_197 = SCREEN_BASE_196 + 14
+SCREEN_BASE_198 = SCREEN_BASE_197 + 14
+SCREEN_BASE_199 = SCREEN_BASE_198 + 14
+
 
 
 SCREEN_END_0 	= $4000 + 23
@@ -439,11 +447,20 @@ SCREEN_END_190 	= $56E0 + 23
 SCREEN_END_191 	= $57E0 + 23
 
 SCREEN_END_192 	= RENDER_ROW_BUFFER + 14
+SCREEN_END_193 	= SCREEN_END_192 + 14
+SCREEN_END_194 	= SCREEN_END_193 + 14
+SCREEN_END_195 	= SCREEN_END_194 + 14
+SCREEN_END_196 	= SCREEN_END_195 + 14
+SCREEN_END_197 	= SCREEN_END_196 + 14
+SCREEN_END_198 	= SCREEN_END_197 + 14
+SCREEN_END_199 	= SCREEN_END_198 + 14
+
+
 
 ; extra row buffer for fresh attrs
 ATTR_ROW_BUFFER:
-    DEFS        16, %00001100			; green on blue bank
-                                        ; 14 + 2 weird padding again...
+    DEFS        14+2, %00001100		; 1 rows green on blue bank
+                                        ; + 2 weird padding again...
 
 
 ATTR_BASE_0     = ATTR_START + 9 + (0 * 32)

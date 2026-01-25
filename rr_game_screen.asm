@@ -1,14 +1,14 @@
 	
 GAME_MAIN:
 	CALL 	GAME_CLEAR_RIVER
-	CALL 	SPRITE_XOR_PREP
-	CALL 	SPRITE_XOR_RENDER			; show it initially
+	CALL 	SPRITE_XOR_RENDER_ON			; show it initially
+	JP  	USER_AND_BUFFER
 
 GAME_ANIMATE_MAIN:
-	; update frame counter
-	LD 		A, (GAME_FRAME)
+	; update screen counter
+	LD 		A, (SCREEN_FRAME)
 	INC 	A
-	LD 		(GAME_FRAME), A
+	LD 		(SCREEN_FRAME), A
 
 	HALT							; wait for vsync (fired after bottom border, start of vblank)
 
@@ -16,7 +16,7 @@ GAME_ANIMATE_MAIN:
 	CALL	TOP_BORDER_RENDER_GAME	; timining-critical flipping of top border colours
 
 	; boarder or screen scroll
-    LD    	A, (GAME_FRAME)
+    LD    	A, (SCREEN_FRAME)
 	AND		%00000001			; 0-1
 
 	; jump table
@@ -243,40 +243,26 @@ GAME_STACK_RENDER:
 GAME_STACK_RENDER_DONE:
 
 	; ev 8*2=16 frames... 
-	LD 		A, (GAME_FRAME)
+	LD 		A, (SCREEN_FRAME)
 	AND 	%00001111
 	CP 		0
-	JP 		NZ, NOT_ATTR_TIME
+;	JP 		NZ, NOT_ATTR_TIME
 
 	CALL 	STACK_RENDER_ATTRS		; no tricks just call
 	CALL 	UPDATE_ATTR_SCOREBOARD	; countdown until can do next colour
 
 
 NOT_ATTR_TIME:
-	; get where old sprite will be after scroll
-	LD 		A, (SPRITE_Y)
-	DEC 	A
-	LD 		(SPRITE_Y), A
+ 	CALL 	SPRITE_XOR_RENDER_OFF
 
-	CALL 	SPRITE_XOR_PREP
-	; xor sprite off
- 	CALL 	SPRITE_XOR_RENDER
-
-	; restore y
-	LD 		A, (SPRITE_Y)
-	INC 	A
-	LD 		(SPRITE_Y), A
-
-	; now for xor on...
  	LD 		A, (SPRITE_X_NEW)		
  	LD		(SPRITE_X), A			; move to new position
 
-	CALL 	SPRITE_XOR_PREP			
-	CALL 	SPRITE_XOR_RENDER		; xor on
+	CALL 	SPRITE_XOR_RENDER_ON
 
 	; hack border to see timings
-	; LD 		A, COL_RED		
-	; OUT		($FE), A		
+	LD 		A, COL_WHT		
+	OUT		($FE), A		
 
 	JP 		GAME_ANIMATE_MAIN
 
@@ -285,10 +271,15 @@ NOT_ATTR_TIME:
 
 ; jump table
 GAME_JUMP_TABLE:
-	DEFW 	USER_AND_BUFFER
 	DEFW 	GAME_STACK_RENDER
+	DEFW 	GAME_STACK_RENDER
+;	DEFW 	USER_AND_BUFFER
 
-; frame counter
+; screen frame counter
+SCREEN_FRAME:
+	DEFB 	0
+
+; game frame counter
 GAME_FRAME:
 	DEFB 	0
 
