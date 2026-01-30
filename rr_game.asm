@@ -244,7 +244,7 @@ GAME_ADD_RAPIDS:
 	LD 		(HL), A				; random byte into random position
 
 	; bottom attr to move into
-	LD 		HL, ATTR_BASE_23 + 3
+	LD 		HL, ATTR_BASE_24 + 3
 	ADD		HL, DE				
 	LD		A, %00001111		; white on blue
 	LD 		(HL), A				; and the attr

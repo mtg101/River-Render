@@ -157,6 +157,14 @@ GAME_CLEAR_RIVER_PIXEL_LOOP:
 
 	DJNZ 	GAME_CLEAR_RIVER_PIXEL_LOOP
 
+	; clear pixel buffers
+	LD 		HL, RENDER_ROW_BUFFER
+	LD 		B, 14*2						; 2*14 buffer size
+GAME_CLEAR_RIVER_PIXEL_BUFFER_LOOP:
+	LD 		(HL), 0
+	INC 	HL
+	DJNZ	GAME_CLEAR_RIVER_PIXEL_BUFFER_LOOP
+
 	; attrs correct
 	LD 		A, %00001111			; white on blue river
 	LD 		C, %00001100			; green on blue bank
@@ -204,45 +212,74 @@ GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 
 	DJNZ 	GAME_CLEAR_RIVER_ATTR_LOOP_REAL
 
-	; clear buffer
-	LD 		HL, RENDER_ROW_BUFFER
+	; clear attr buffers
+	LD 		HL, ATTR_ROW_BUFFER
 
-	; 16 bytes...
-	LD 		(HL), 0
+	; 14 bytes first attr row
+	LD 		(HL), C
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), C
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
-	INC 	HL
-
-	LD 		(HL), 0
-	INC 	HL
-	LD 		(HL), 0
-	INC 	HL
-	LD 		(HL), 0
-	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
 
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
 
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
+	INC 	HL
 
+	LD 		(HL), C
+	INC 	HL
+	LD 		(HL), C
+	INC 	HL
+
+	; 14 bytes second attr row
+	LD 		(HL), C
+	INC 	HL
+	LD 		(HL), C
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), C
+	INC 	HL
+	LD 		(HL), C
+	INC 	HL
 
 	RET 							; GAME_CLEAR_RIVER
 
