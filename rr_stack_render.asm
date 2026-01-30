@@ -260,7 +260,8 @@ STACK_RENDER_ATTRS:
 	Stack_Row_Attr		23, 22
 
 	Stack_Row_Attr		24, 23		; buffer
-	Stack_Row_Attr		25, 24		; clear buffer with this one simple trick
+	Stack_Row_Attr		25, 24		; buffer
+	Stack_Row_Attr		26, 25		; clear buffer with this one simple trick
 
 
 	; restore SP

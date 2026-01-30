@@ -6,7 +6,7 @@
 
 GAME_PROCGEN:
 	; banks always move
-	CALL 	GAME_MOVE_BANKS
+	CALL 	BANK_MOVE_BANKS
 
 	; ev 8*2=16 frames... before stack does on 0, so %00001111
 	LD 		A, (SCREEN_FRAME)
@@ -17,6 +17,10 @@ GAME_PROCGEN:
 	JP	 	GAME_ADD_ROB
 
 GAME_ADD_ROB_DONE:
+	JP 		BANK_ADD_BOB
+
+GAME_ADD_BOB_DONE:
+
 GAME_NOT_ATTR_TIME:
 
 	RET 						; GAME_PROCGEN
@@ -59,8 +63,31 @@ GAME_ADD_FISH:
 	ADD		HL, DE				
 	LD 		(HL), %00001000		; black on blue
 
+	; extra for scroll
+	LD 		HL, ATTR_BASE_25
+	ADD		HL, DE				
+	LD 		(HL), %00001000		; black on blue
+
 	LD 		BC, GAME_FISH_PIXELS
 
+	JP 		GAME_ADD_8x8_PIXELS
+
+GAME_ADD_ROCK:
+	; attr in buffer
+	LD 		HL, ATTR_BASE_24
+	ADD		HL, DE				
+	LD 		(HL), %00001011		; red on blue
+
+	; extra for scroll
+	LD 		HL, ATTR_BASE_25
+	ADD		HL, DE				
+	LD 		(HL), %00001011		; red on blue
+
+	LD 		BC, GAME_ROCK_PIXELS
+
+	JP 		GAME_ADD_8x8_PIXELS
+
+GAME_ADD_8x8_PIXELS:
 	; row 0
 	LD 		HL, SCREEN_BASE_192 + 3
 	ADD		HL, DE				; random bottom row
@@ -147,8 +174,8 @@ GAME_ADD_ROB_JUMP_TABLE:
 	DEFW 	GAME_ADD_BLANK
 	DEFW 	GAME_ADD_RAPIDS
 	DEFW 	GAME_ADD_RAPIDS
-	DEFW 	GAME_ADD_FISH	
-	DEFW 	GAME_ADD_FISH	
+	DEFW 	GAME_ADD_ROCK
+	DEFW 	GAME_ADD_ROCK	
 	DEFW 	GAME_ADD_FISH	
 	DEFW 	GAME_ADD_FISH	
 
@@ -161,6 +188,18 @@ GAME_FISH_PIXELS:
 	DEFB 	%00111000
 	DEFB 	%00011100
 	DEFB 	%00001110
+
+GAME_ROCK_PIXELS:
+	DEFB 	%00000000
+	DEFB 	%00111000
+	DEFB 	%00111100
+	DEFB	%01111110
+	DEFB 	%01111110
+	DEFB 	%00111110
+	DEFB 	%00111000
+	DEFB 	%00000000
+
+
 
 ; Address (Hex)	Binary (High Byte)	Bit 0	Bit 1	Bit 2	Bit 3	Bit 4
 ; $FEFE	1111 1110	SHIFT	Z	X	C	V

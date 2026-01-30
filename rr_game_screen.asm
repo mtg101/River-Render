@@ -175,7 +175,7 @@ GAME_CLEAR_RIVER_PIXEL_BUFFER_LOOP:
 
 GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 	; LD 14 attrs
-	LD 		(HL), %00100010			; red on green bank
+	LD 		(HL), %00100000			; black on green bank
 	INC 	HL
 	LD 		(HL), C
 	INC 	HL
@@ -204,7 +204,7 @@ GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 
 	LD 		(HL), C
 	INC 	HL
-	LD 		(HL), %00100010			; red on green bank
+	LD 		(HL), %00100000			; black on green bank
 
 	ADD 	HL, DE
 
@@ -233,6 +233,25 @@ GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 	INC 	HL
 
 	; 8 bytes second attr row
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	; 8 bytes third attr row
 	LD 		(HL), A
 	INC 	HL
 	LD 		(HL), A
