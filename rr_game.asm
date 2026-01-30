@@ -113,7 +113,7 @@ GAME_RENDER_BANKS:
 	CALL 	GET_16_PIXEL_BAR_LEFT			; Output: D = Left Byte, E = Right Byte
 
 	; render left
-	LD 		HL, SCREEN_BASE_191				; leftmost bank
+	LD 		HL, SCREEN_BASE_191	+1			; leftmost bank
 	LD 		(HL), D							; pixels
 
 	INC 	HL								; inner left bank
@@ -125,7 +125,7 @@ GAME_RENDER_BANKS:
 	CALL 	GET_16_PIXEL_BAR_RIGHT			; Output: D = Left Byte, E = Right Byte
 
 	; render right
-	LD 		HL, SCREEN_BASE_191 + 12		; inner right
+	LD 		HL, SCREEN_BASE_191 + 11		; inner right
 	LD 		(HL), E							; pixels
 
 	INC 	HL								; rightmost
@@ -243,7 +243,7 @@ GAME_ADD_RAPIDS:
 
 RAPIDS_COLOUR_DONE
 	; attr in buffer
-	LD 		HL, ATTR_BASE_24 + 3
+	LD 		HL, ATTR_BASE_24
 	ADD		HL, DE				
 	LD 		(HL), A				; and the attr
 

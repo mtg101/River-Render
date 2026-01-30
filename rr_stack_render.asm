@@ -209,14 +209,22 @@ STACK_RENDER_JUST_SCROLL:
 	Stack_Row_Pixel	191	,	190
 	
 	Stack_Row_Pixel	192	,	191		; buffer
-	Stack_Row_Pixel	193	,	192		; clears buffer with one simple trick :)
+	Stack_Row_Pixel	193	,	192		; buffer
+	Stack_Row_Pixel	194	,	193		; buffer
+	Stack_Row_Pixel	195	,	194		; buffer
+	Stack_Row_Pixel	196	,	195		; buffer
+	Stack_Row_Pixel	197	,	196		; buffer
+	Stack_Row_Pixel	198	,	197		; buffer
+	Stack_Row_Pixel	199	,	198		; buffer
+
+	Stack_Row_Pixel	200	,	199		; clears buffer with one simple trick :)
 
 	; restore SP
 	LD 			SP, (STACK_POINTER_BACKUP)		
 
 ; hack border to see timings
-	; LD 		A, COL_YEL		
-	; OUT		($FE), A		
+	LD 		A, COL_YEL		
+	OUT		($FE), A		
 
 	RET			; STACK_RENDER
 
@@ -259,8 +267,8 @@ STACK_RENDER_ATTRS:
 	LD 			SP, (STACK_POINTER_BACKUP)		
 
 ; hack border to see timings
-	; LD 		A, COL_CYN
-	; OUT		($FE), A		
+	LD 		A, COL_CYN
+	OUT		($FE), A		
 
 	RET 						; STACK_RENDER_ATTRS
 

@@ -69,7 +69,6 @@ GAME_CLEAR_RIVER:
 	LD 		A, %00001001			; blue on blue river
 	LD 		C, %00100100			; green on green bank
 
-
 	LD 		HL, ATTR_START + 9
 
 	LD 		B, 24 					; 24 attr rows
@@ -81,7 +80,7 @@ GAME_CLEAR_RIVER_ATTR_LOOP:
 	INC 	HL
 	LD 		(HL), C
 	INC 	HL
-	LD 		(HL), A
+	LD 		(HL), C
 	INC 	HL
 	LD 		(HL), A
 	INC 	HL
@@ -101,12 +100,12 @@ GAME_CLEAR_RIVER_ATTR_LOOP:
 	INC 	HL
 	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), A
+	LD 		(HL), C
 	INC 	HL
 
-	LD 		(HL), A
+	LD 		(HL), C
 	INC 	HL
-	LD 		(HL), A
+	LD 		(HL), C
 
 	ADD 	HL, DE
 
@@ -169,7 +168,6 @@ GAME_CLEAR_RIVER_PIXEL_BUFFER_LOOP:
 	LD 		A, %00001111			; white on blue river
 	LD 		C, %00001100			; green on blue bank
 
-
 	LD 		HL, ATTR_START + 9
 
 	LD 		B, 24 					; 24 attr rows
@@ -177,11 +175,11 @@ GAME_CLEAR_RIVER_PIXEL_BUFFER_LOOP:
 
 GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 	; LD 14 attrs
-	LD 		(HL), C
+	LD 		(HL), %00100010			; red on green bank
 	INC 	HL
 	LD 		(HL), C
 	INC 	HL
-	LD 		(HL), A
+	LD 		(HL), C
 	INC 	HL
 	LD 		(HL), A
 	INC 	HL
@@ -201,12 +199,12 @@ GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 	INC 	HL
 	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), A
+	LD 		(HL), C
 	INC 	HL
 
 	LD 		(HL), C
 	INC 	HL
-	LD 		(HL), C
+	LD 		(HL), %00100010			; red on green bank
 
 	ADD 	HL, DE
 
@@ -215,16 +213,7 @@ GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 	; clear attr buffers
 	LD 		HL, ATTR_ROW_BUFFER
 
-	; 14 bytes first attr row
-	LD 		(HL), C
-	INC 	HL
-	LD 		(HL), C
-	INC 	HL
-	LD 		(HL), A
-	INC 	HL
-	LD 		(HL), A
-	INC 	HL
-
+	; 8 bytes first attr row
 	LD 		(HL), A
 	INC 	HL
 	LD 		(HL), A
@@ -243,21 +232,7 @@ GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 	LD 		(HL), A
 	INC 	HL
 
-	LD 		(HL), C
-	INC 	HL
-	LD 		(HL), C
-	INC 	HL
-
-	; 14 bytes second attr row
-	LD 		(HL), C
-	INC 	HL
-	LD 		(HL), C
-	INC 	HL
-	LD 		(HL), A
-	INC 	HL
-	LD 		(HL), A
-	INC 	HL
-
+	; 8 bytes second attr row
 	LD 		(HL), A
 	INC 	HL
 	LD 		(HL), A
@@ -274,11 +249,6 @@ GAME_CLEAR_RIVER_ATTR_LOOP_REAL:
 	LD 		(HL), A
 	INC 	HL
 	LD 		(HL), A
-	INC 	HL
-
-	LD 		(HL), C
-	INC 	HL
-	LD 		(HL), C
 	INC 	HL
 
 	RET 							; GAME_CLEAR_RIVER

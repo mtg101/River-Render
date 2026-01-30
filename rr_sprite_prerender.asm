@@ -144,7 +144,7 @@ SPRITE_XOR_RENDER_ON:
 
 SPRITE_MOVE_LEFT:
 	LD 		A, (SPRITE_X_NEW)
-	CP 		88								; 8 * 11 = 88
+	CP 		96								; 8 * 12 = 96
 	RET	 	Z								; edge - SPRITE_MOVE_LEFT
 
 	DEC 	A 
@@ -153,7 +153,7 @@ SPRITE_MOVE_LEFT:
 
 SPRITE_MOVE_RIGHT:
 	LD 		A, (SPRITE_X_NEW)
-	CP 		152								; 255 - 88 from above - 16 width = 151 + 1
+	CP 		144								; 255 - 96 from above - width of boat 16 = 143 + 1
 	RET	 	Z								; edge - SPRITE_MOVE_RIGHT
 
 	INC 	A 
