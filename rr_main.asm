@@ -17,7 +17,7 @@
 	INCLUDE "rr_sprite_prerender.asm"
 	
 START:
- 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
+w 	CALL	INITIALISE_INTERRUPT	; IM2 with ROM trick
 ;	CALL 	START_MAIN				; go to start screen
 
 ; hack call game directly while developing...

@@ -304,8 +304,6 @@ GAME_STACK_RENDER_DONE:
 	JP 		NZ, NOT_ATTR_TIME
 
 	CALL 	STACK_RENDER_ATTRS		; no tricks just call
-	CALL 	UPDATE_ATTR_SCOREBOARD	; countdown until can do next colour
-
 
 NOT_ATTR_TIME:
  	CALL 	SPRITE_XOR_RENDER_OFF
