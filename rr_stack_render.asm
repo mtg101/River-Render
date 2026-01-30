@@ -223,8 +223,8 @@ STACK_RENDER_JUST_SCROLL:
 	LD 			SP, (STACK_POINTER_BACKUP)		
 
 ; hack border to see timings
-	LD 		A, COL_YEL		
-	OUT		($FE), A		
+	; LD 		A, COL_YEL		
+	; OUT		($FE), A		
 
 	RET			; STACK_RENDER
 
@@ -267,8 +267,8 @@ STACK_RENDER_ATTRS:
 	LD 			SP, (STACK_POINTER_BACKUP)		
 
 ; hack border to see timings
-	LD 		A, COL_CYN
-	OUT		($FE), A		
+	; LD 		A, COL_CYN
+	; OUT		($FE), A		
 
 	RET 						; STACK_RENDER_ATTRS
 
