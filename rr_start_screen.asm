@@ -1,8 +1,12 @@
-	
+
+
+START_RESTART:
+	CALL 	START_CLEAR_RIVER
+
 START_MAIN:
 	LD		A, 0
 	LD		(PRINT_AT_Y), A
-	LD		A, 12
+	LD		A, 10
 	LD		(PRINT_AT_X), A
 	LD		HL, START_PRINT_STRING
 
@@ -59,6 +63,217 @@ START_STACK_RENDER:
 	; stack render will return to START_ANIMATE_MAIN
 
 
+START_CLEAR_RIVER:
+	; attrs blank
+	LD 		A, %00001001			; blue on blue river
+	LD 		C, %00100100			; green on green bank
+
+	LD 		HL, ATTR_START + 9
+
+	LD 		B, 24 					; 24 attr rows
+	LD 		DE, 19					; 18 along, plus one to avoid an INC :)
+
+START_CLEAR_RIVER_ATTR_LOOP:
+	; LD 14 attrs
+	LD 		(HL), C
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), C
+
+	ADD 	HL, DE
+
+	DJNZ 	START_CLEAR_RIVER_ATTR_LOOP
+
+
+	; pixels
+	LD 		HL, SCREEN_START + 9
+
+	LD 		A, 0
+
+	LD 		B, 192 					; 24 pixel rows
+	LD 		DE, 19					; 18 along, plus one to avoid an INC :)
+
+START_CLEAR_RIVER_PIXEL_LOOP:
+	; LD 14 pixel bytes
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+
+	ADD 	HL, DE
+
+	DJNZ 	START_CLEAR_RIVER_PIXEL_LOOP
+
+	; clear pixel buffers
+	LD 		HL, RENDER_ROW_BUFFER
+	LD 		B, 14*3						; 2*14 buffer size + magic buf
+START_CLEAR_RIVER_PIXEL_BUFFER_LOOP:
+	LD 		(HL), 0
+	INC 	HL
+	DJNZ	START_CLEAR_RIVER_PIXEL_BUFFER_LOOP
+
+	; attrs correct
+	LD 		A, %00001111			; white on blue river
+;	LD 		C, %00100100			; green on green bank
+	LD 		C, %00001111			; green on green bank
+
+	LD 		HL, ATTR_START + 9
+
+	LD 		B, 24 					; 24 attr rows
+	LD 		DE, 19					; 18 along, plus one to avoid an INC :)
+
+START_CLEAR_RIVER_ATTR_LOOP_REAL:
+	; LD 14 attrs
+	LD 		(HL), C
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), C
+
+	ADD 	HL, DE
+
+	DJNZ 	START_CLEAR_RIVER_ATTR_LOOP_REAL
+
+	; clear attr buffers
+	LD 		HL, ATTR_ROW_BUFFER
+
+	; 8 bytes first attr row
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	; 8 bytes second attr row
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	; 8 bytes third attr row
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	RET 							; START_CLEAR_RIVER
+
+
 ; jump table
 START_JUMP_TABLE:
 	DEFW 	UPDATE_BORDER_BUFFER_START
@@ -71,4 +286,4 @@ START_FRAME:
 	DEFB 	0
 
 START_PRINT_STRING:
-	DEFB	"B TO BOAT", 0
+	DEFB	"B RIDES BOAT", 0

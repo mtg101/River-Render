@@ -181,8 +181,6 @@ GAME_ADD_8x8_PIXELS:
 	LD 		A, (BC)
 	LD 		(HL), A
 
-
-
 	JP 		GAME_ADD_ROB_DONE
 
 

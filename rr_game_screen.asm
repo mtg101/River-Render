@@ -19,7 +19,7 @@ GAME_ANIMATE_MAIN:
 	LD		BC, $FDFE				; a to g (s in bit 1)
 	IN		A, (C)					; read keys
 	BIT		1, A					; s is bit 1 (1 means key not pressed, 0 pressed)
-	JP		Z, START_MAIN			; go to the game...
+	JP		Z, START_RESTART		; go to the game...
 
 
 	; boarder or screen scroll
@@ -117,44 +117,44 @@ GAME_CLEAR_RIVER_ATTR_LOOP:
 
 
 	; pixels
-	; get row 0 + 8 addr
-	LD 		HL, SCREEN_START + 8
+	LD 		HL, SCREEN_START + 9
+	LD 		A, 0
 
 	LD 		B, 192 					; 24 pixel rows
 	LD 		DE, 19					; 18 along, plus one to avoid an INC :)
 
 GAME_CLEAR_RIVER_PIXEL_LOOP:
 	; LD 14 pixel bytes
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
-	INC 	HL
-
-	LD 		(HL), 0
-	INC 	HL
-	LD 		(HL), 0
-	INC 	HL
-	LD 		(HL), 0
-	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
 
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
 
-	LD 		(HL), 0
+	LD 		(HL), A
 	INC 	HL
-	LD 		(HL), 0
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
+	INC 	HL
+
+	LD 		(HL), A
+	INC 	HL
+	LD 		(HL), A
 
 	ADD 	HL, DE
 
@@ -162,7 +162,7 @@ GAME_CLEAR_RIVER_PIXEL_LOOP:
 
 	; clear pixel buffers
 	LD 		HL, RENDER_ROW_BUFFER
-	LD 		B, 14*2						; 2*14 buffer size
+	LD 		B, 14*3						; 2*14 buffer size + magic
 GAME_CLEAR_RIVER_PIXEL_BUFFER_LOOP:
 	LD 		(HL), 0
 	INC 	HL
