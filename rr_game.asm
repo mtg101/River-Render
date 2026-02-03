@@ -128,56 +128,56 @@ GAME_ADD_ROCK:
 GAME_ADD_8x8_PIXELS:
 	; row 0
 	LD 		HL, SCREEN_BASE_192 + 3
-	ADD		HL, DE				; random bottom row
+	ADD		HL, DE				
 	LD 		A, (BC)
 	LD 		(HL), A
 
 	; row 1
 	INC 	BC
 	LD 		HL, SCREEN_BASE_193 + 3
-	ADD		HL, DE				; random bottom row
+	ADD		HL, DE				
 	LD 		A, (BC)
 	LD 		(HL), A
 
 	; row 2
 	INC 	BC
 	LD 		HL, SCREEN_BASE_194 + 3
-	ADD		HL, DE				; random bottom row
+	ADD		HL, DE				
 	LD 		A, (BC)
 	LD 		(HL), A
 
 	; row 3
 	INC 	BC
 	LD 		HL, SCREEN_BASE_195 + 3
-	ADD		HL, DE				; random bottom row
+	ADD		HL, DE				
 	LD 		A, (BC)
 	LD 		(HL), A
 
 	; row 4
 	INC 	BC
 	LD 		HL, SCREEN_BASE_196 + 3
-	ADD		HL, DE				; random bottom row
+	ADD		HL, DE				
 	LD 		A, (BC)
 	LD 		(HL), A
 
 	; row 5
 	INC 	BC
 	LD 		HL, SCREEN_BASE_197 + 3
-	ADD		HL, DE				; random bottom row
+	ADD		HL, DE				
 	LD 		A, (BC)
 	LD 		(HL), A
 
 	; row 6
 	INC 	BC
 	LD 		HL, SCREEN_BASE_198 + 3
-	ADD		HL, DE				; random bottom row
+	ADD		HL, DE				
 	LD 		A, (BC)
 	LD 		(HL), A
 
 	; row 7
 	INC 	BC
 	LD 		HL, SCREEN_BASE_199 + 3
-	ADD		HL, DE				; random bottom row
+	ADD		HL, DE				
 	LD 		A, (BC)
 	LD 		(HL), A
 

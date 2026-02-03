@@ -65,6 +65,10 @@ UPDATE_DISTANCE_SCORE:
 
 
 GAME_CLEAR_RIVER:
+	; reset frame counter
+	LD 		A, 0-2
+	LD 		(SCREEN_FRAME), A
+
 	; attrs blank
 	LD 		A, %00001001			; blue on blue river
 	LD 		C, %00100100			; green on green bank
