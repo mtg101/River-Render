@@ -459,8 +459,13 @@ SCREEN_END_199 	= SCREEN_END_198 + 14
 SCREEN_END_200 	= SCREEN_END_199 + 14
 
 
-ATTR_ROW_BUFFER:
-    DEFS    8*3     ; 2 actual buffer, one magic clear
+ATTR_ROW_BUFFER:    ; first
+    DEFS    8
+ATTR_ROW_BUFFER_2:  ; second
+    DEFS    8
+ATTR_ROW_BUFFER_3:  ; cheat to clear
+    DEFS    8
+
 
 ATTR_BASE_0     = ATTR_START + 12 + (0 * 32)
 ATTR_BASE_1     = ATTR_START + 12 + (1 * 32)
@@ -516,6 +521,6 @@ ATTR_END_21      = ATTR_BASE_21 + 8
 ATTR_END_22      = ATTR_BASE_22 + 8
 ATTR_END_23      = ATTR_BASE_23 + 8
 
-ATTR_END_24     = ATTR_ROW_BUFFER + 8
-ATTR_END_25     = ATTR_END_24 + 8
-ATTR_END_26     = ATTR_END_25 + 8
+ATTR_END_24     = ATTR_BASE_24 + 8
+ATTR_END_25     = ATTR_BASE_25 + 8
+ATTR_END_26     = ATTR_BASE_26 + 8

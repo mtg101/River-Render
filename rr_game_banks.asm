@@ -235,7 +235,7 @@ BANK_ADD_BOB:
 	LD 		D, 0
 	LD 		E, 0
 
-	; which col
+	; which col l/r
     CALL  	RNG
     LD    	A, (NEXT_RNG)
 	AND 	%00000001			; 0-1
@@ -246,8 +246,7 @@ BANK_ADD_BOB:
 	LD 		E, 13
 
 BANK_ADD_COL_GOT:
-
-	; which ROB
+	; which BOB
     CALL  	RNG
     LD    	A, (NEXT_RNG)
 	AND 	%00001111			; 0-15
@@ -269,31 +268,11 @@ BANK_ADD_COL_GOT:
 
 
 BANK_ADD_GRASS:
-	; attr in buffer
-	LD 		HL, ATTR_BASE_24
-	ADD		HL, DE				
-	LD 		(HL), %00001000		; black on blue
-
-	; extra for scroll
-	LD 		HL, ATTR_BASE_25
-	ADD		HL, DE				
-	LD 		(HL), %00001000		; black on blue
-
 	LD 		BC, BANK_GRASS_PIXELS
 
 	JP 		BANK_ADD_8x8_PIXELS
 
 BANK_ADD_SIGN:
-	; attr in buffer
-	LD 		HL, ATTR_BASE_24
-	ADD		HL, DE				
-	LD 		(HL), %00001011		; red on blue
-
-	; extra for scroll
-	LD 		HL, ATTR_BASE_25
-	ADD		HL, DE				
-	LD 		(HL), %00001011		; red on blue
-
 	LD 		BC, BANK_SIGN_PIXELS
 
 	JP 		BANK_ADD_8x8_PIXELS

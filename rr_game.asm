@@ -199,7 +199,7 @@ GAME_ADD_RAPIDS:
 	; attr in buffer
 	LD 		HL, ATTR_BASE_24
 	ADD		HL, DE				
-	LD 		(HL), %00001111		; white on blue
+	LD 		(HL), %00001110		; white on blue - hack yel on blue
 
     CALL  	RNG
     LD    	A, (NEXT_RNG)
