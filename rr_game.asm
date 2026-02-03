@@ -14,6 +14,8 @@ GAME_PROCGEN:
 	CP 		%00001111
 	JP 		NZ, GAME_NOT_ATTR_TIME
 
+	CALL 	GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN
+
 	JP	 	GAME_ADD_ROB
 
 GAME_ADD_ROB_DONE:
@@ -25,6 +27,24 @@ GAME_NOT_ATTR_TIME:
 
 	RET 						; GAME_PROCGEN
 
+GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN:
+	LD 		B, 8				; 8 cols
+	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
+GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN_LOOP:
+	LD 		A, (HL)
+	CP 		0					; skip if already zero
+	JP 		Z, GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN_LOOP_NEXT
+
+	DEC 	A
+	LD 		(HL), A
+
+GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN_LOOP_NEXT:
+	INC 	HL
+	DJNZ 	GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN_LOOP
+
+
+	RET 						; 	GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN
+
 
 ; add River OBject :)
 GAME_ADD_ROB:
@@ -35,6 +55,14 @@ GAME_ADD_ROB:
 
 	LD 		D, 0
 	LD 		E, A				; 0-7 in DE
+
+	; check not clashing with existing object
+	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
+	ADD 	HL, DE
+	LD 		A, (HL)
+	CP 		0
+	JP 		NZ, GAME_ADD_ROB_DONE	; skip if it clashes
+
 
 	; which ROB
     CALL  	RNG
@@ -58,6 +86,11 @@ GAME_ADD_ROB:
 
 
 GAME_ADD_FISH:
+	; update scorboard
+	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
+	ADD 	HL, DE
+	LD 		(HL), 2				; double block
+
 	; attr in buffer
 	LD 		HL, ATTR_BASE_24
 	ADD		HL, DE				
@@ -73,15 +106,20 @@ GAME_ADD_FISH:
 	JP 		GAME_ADD_8x8_PIXELS
 
 GAME_ADD_ROCK:
+	; update scorboard
+	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
+	ADD 	HL, DE
+	LD 		(HL), 2				; double  block
+
 	; attr in buffer
 	LD 		HL, ATTR_BASE_24
 	ADD		HL, DE				
-	LD 		(HL), %00001011		; red on blue
+	LD 		(HL), %00001011		; mag on blue
 
 	; extra for scroll
 	LD 		HL, ATTR_BASE_25
 	ADD		HL, DE				
-	LD 		(HL), %00001011		; red on blue
+	LD 		(HL), %00001011		; mag on blue
 
 	LD 		BC, GAME_ROCK_PIXELS
 
@@ -153,6 +191,11 @@ GAME_ADD_BLANK:
 
 
 GAME_ADD_RAPIDS:
+	; update scorboard
+	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
+	ADD 	HL, DE
+	LD 		(HL), 1				; single block
+
 	; attr in buffer
 	LD 		HL, ATTR_BASE_24
 	ADD		HL, DE				
@@ -198,6 +241,10 @@ GAME_ROCK_PIXELS:
 	DEFB 	%00111110
 	DEFB 	%00111000
 	DEFB 	%00000000
+
+; countdown scoreboard for when can draw next
+GAME_ROB_COUNTDOWN_SCOREBOARD:
+	DEFS	8
 
 
 

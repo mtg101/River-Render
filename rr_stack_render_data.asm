@@ -460,7 +460,7 @@ SCREEN_END_200 	= SCREEN_END_199 + 14
 
 
 ATTR_ROW_BUFFER:
-    DEFS    8*3
+    DEFS    8*3     ; 2 actual buffer, one magic clear
 
 ATTR_BASE_0     = ATTR_START + 12 + (0 * 32)
 ATTR_BASE_1     = ATTR_START + 12 + (1 * 32)
