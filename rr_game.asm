@@ -15,6 +15,7 @@ GAME_PROCGEN:
 	JP 		NZ, GAME_NOT_ATTR_TIME
 
 	CALL 	GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN
+	CALL 	GAME_TOP_RAPIDS_WHITE
 
 	JP	 	GAME_ADD_ROBS
 
@@ -67,7 +68,7 @@ GAME_ADD_ROBS:
 	; which ROB
     CALL  	RNG
     LD    	A, (NEXT_RNG)
-	AND 	%00000111			; 0-7
+	AND 	%00001111			; 0-15
 
 	; jump table
 	RLCA 						; 16bit, so shift left to double
@@ -91,15 +92,29 @@ GAME_ADD_FISH:
 	ADD 	HL, DE
 	LD 		(HL), 2				; double block
 
+	; which colour fish
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+	AND 	%00000111			; 0-8
+	CP 		0					; i in 8
+
+	LD 		A, %00001000		; black on blue
+
+	JP 		NZ, GAME_ADD_FISH_GOT_COLOUR
+
+	LD 		A, %00001110		; yellow on blue
+
+GAME_ADD_FISH_GOT_COLOUR:
+
 	; attr in buffer
 	LD 		HL, ATTR_BASE_24
 	ADD		HL, DE				
-	LD 		(HL), %00001000		; black on blue
+	LD 		(HL), A
 
 	; extra for scroll
 	LD 		HL, ATTR_BASE_25
 	ADD		HL, DE				
-	LD 		(HL), %00001000		; black on blue
+	LD 		(HL), A
 
 	; which fish
     CALL  	RNG
@@ -127,7 +142,7 @@ GAME_ADD_ROCK:
 	ADD 	HL, DE
 	LD 		(HL), 2				; double  block
 
-	; which fish
+	; which colour rock
     CALL  	RNG
     LD    	A, (NEXT_RNG)
 	AND 	%00000111			; 0-8
@@ -239,32 +254,103 @@ GAME_ADD_RAPIDS:
 	; update scorboard
 	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
 	ADD 	HL, DE
-	LD 		(HL), 1				; single block
+	LD 		(HL), 2				; bouble block
+
+	; which colour rapid
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+	AND 	%00000111			; 0-8
+	CP 		0					; i in 8
+
+	LD 		A, %00001111		; white on blue
+
+	JP 		NZ, GAME_ADD_RAPID_GOT_COLOUR
+
+	LD 		A, %00001101		; cyan on blue
+
+GAME_ADD_RAPID_GOT_COLOUR:
 
 	; attr in buffer
 	LD 		HL, ATTR_BASE_24
 	ADD		HL, DE				
-	LD 		(HL), %00001111		; white on blue
+	LD 		(HL), A
 
+	; extra for scroll
+	LD 		HL, ATTR_BASE_25
+	ADD		HL, DE				
+	LD 		(HL), A
+
+	; how many rows down
     CALL  	RNG
     LD    	A, (NEXT_RNG)
+	AND 	%00000111			; 0-7
 
-	LD 		HL, SCREEN_BASE_192 + 3
-	ADD		HL, DE				; random bottom row
+	; LUT
+	RLCA 						; 16bit, so shift left to double
+	LD 		H, 0
+	LD		L, A				; offset in HL
+	LD 		BC, SCREEN_BASE_BUFFER_LUT
+
+	ADD 	HL, BC				; points to 
+
+	LD 		A, (HL)				; low byte of addr
+	INC 	HL
+	LD		H, (HL)				; high byte
+	LD 		L, A				; HL now points to pixels
+
+	ADD		HL, DE				; add random col
+
+	PUSH 	HL					; RNG trashes HL
+	; random byte for rapid
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)		
+
+	POP 	HL					; restore HL
+	INC 	HL
+	INC 	HL 
+	INC 	HL 					; +3 river offset
+
 	LD 		(HL), A				; random byte into random position
 
 	JP 		GAME_ADD_ROB_DONE
 
+; any cyan on blue attrs in the boat rows need to be white
+GAME_TOP_RAPIDS_WHITE:
+	; first boat row
+	LD 		B, 8				; 8 attr cols
+	LD 		HL, ATTR_BASE_4
+GAME_TOP_RAPIDS_WHITE_LOOP:
+	LD 		A, (HL)
+	CP 		%00001101			; cyan on blue
+	JP 		NZ, GAME_TOP_RAPIDS_WHITE_LOOP_DONE
+
+	LD 		A, %00001111		; white on blue
+	LD 		(HL), A
+
+GAME_TOP_RAPIDS_WHITE_LOOP_DONE:
+	INC 	HL
+	DJNZ 	GAME_TOP_RAPIDS_WHITE_LOOP
+
+	RET 						; GAME_TOP_RAPIDS_WHITE
 
 ; jump table
 GAME_ADD_ROB_JUMP_TABLE:
 	DEFW 	GAME_ADD_BLANK
 	DEFW 	GAME_ADD_BLANK
+	DEFW 	GAME_ADD_BLANK
+	DEFW 	GAME_ADD_RAPIDS
+	DEFW 	GAME_ADD_RAPIDS
+	DEFW 	GAME_ADD_RAPIDS
+	DEFW 	GAME_ADD_RAPIDS
+	DEFW 	GAME_ADD_RAPIDS
+
 	DEFW 	GAME_ADD_RAPIDS
 	DEFW 	GAME_ADD_RAPIDS
 	DEFW 	GAME_ADD_ROCK
+	DEFW 	GAME_ADD_ROCK
+	DEFW 	GAME_ADD_ROCK
 	DEFW 	GAME_ADD_ROCK	
-	DEFW 	GAME_ADD_FISH	
+	DEFW 	GAME_ADD_ROCK
 	DEFW 	GAME_ADD_FISH	
 
 
