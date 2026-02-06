@@ -127,15 +127,29 @@ GAME_ADD_ROCK:
 	ADD 	HL, DE
 	LD 		(HL), 2				; double  block
 
+	; which fish
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+	AND 	%00000111			; 0-8
+	CP 		0					; i in 8
+
+	LD 		A, %00001011		; mag on blue
+
+	JP 		NZ, GAME_ADD_ROCK_GOT_COLOUR
+
+	LD 		A, %00001010		; red on blue
+
+GAME_ADD_ROCK_GOT_COLOUR:
+
 	; attr in buffer
 	LD 		HL, ATTR_BASE_24
 	ADD		HL, DE				
-	LD 		(HL), %00001011		; mag on blue
+	LD 		(HL), A
 
 	; extra for scroll
 	LD 		HL, ATTR_BASE_25
 	ADD		HL, DE				
-	LD 		(HL), %00001011		; mag on blue
+	LD 		(HL), A
 
 	; which rock
     CALL  	RNG
