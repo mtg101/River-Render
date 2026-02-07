@@ -420,22 +420,16 @@ BORDER_BUFFER_ENERGY_DEC:
 	LD 		(BORDER_BUFFER_ENERGY), A
 	RET 				; BORDER_BUFFER_ENERGY_DEC
 
-BORDER_BUFFER_ENERGY_HI_COL:
-	DEFB	COL_BLU
-
-BORDER_BUFFER_ENERGY_MED_COL:
-	DEFB	COL_YEL
-
-BORDER_BUFFER_ENERGY_LOW_COL:
-	DEFB	COL_MAG
-
 BORDER_BUFFER_ENERGY_BG_COL:
+	DEFB	COL_GRN
+
+BORDER_BUFFER_ENERGY_COL:
 	DEFB	COL_RED
 
 UPDATE_BORDER_BUFFER_ENERGY:
-	LD 		DE, 10			; 11 per row, but INCing over for double column
-	LD 		HL, TOP_BORDER_BUFFER_GAME + 9
-							; points to first energy bar
+	LD 		DE, 11			; 11 per row
+	LD 		HL, TOP_BORDER_BUFFER_GAME + 10
+							; points to energy bar
 
 	; 56 - (BORDER_BUFFER_ENERGY) : rows of bg
 	LD 		A, (BORDER_BUFFER_ENERGY)
@@ -444,82 +438,28 @@ UPDATE_BORDER_BUFFER_ENERGY:
 	LD  	B, A
 	LD 		A, 56
 	SUB		B				; A now has how many rows of bg
-	JP 		Z, ENERGY_HI	; energy is 56 full, no bg colour needed
+	JP 		Z, ENERGY_ON	; energy is 56 full, no bg colour needed
 
 	LD 		B, A
 	LD 		A, (BORDER_BUFFER_ENERGY_BG_COL)
-ENERGY_BG_LOOP:
-	LD 	 	(HL), A
-	INC 	HL
+ENERGY_OFF_LOOP:
 	LD 	 	(HL), A
 	ADD 	HL, DE
-	DJNZ 	ENERGY_BG_LOOP
+	DJNZ 	ENERGY_OFF_LOOP
 
-ENERGY_HI:
+ENERGY_ON:
 	; (BORDER_BUFFER_ENERGY) - 42 : rows of hi (max 14)
-	LD 		A, 42
-	LD 		B, A
 	LD 		A, (BORDER_BUFFER_ENERGY)
 	SRA 	A 				; divide by 2 for attr dmg cheat 
-	SUB 	B				; (BORDER_BUFFER_ENERGY) - 42
-	JP   	C, ENERGY_MID	; negative so no hi
-	JP      Z, ENERGY_MID	; 0 so no high
+	JP   	C, ENERGY_DONE	; negative so no hi
+	JP      Z, ENERGY_DONE	; 0 so no high
 
 	LD		B, A 
-	LD 		A, (BORDER_BUFFER_ENERGY_HI_COL)
-ENERGY_HI_LOOP:
-	LD 	 	(HL), A
-	INC 	HL
+	LD 		A, (BORDER_BUFFER_ENERGY_COL)
+ENERGY_ON_LOOP:
 	LD 	 	(HL), A
 	ADD 	HL, DE
-	DJNZ 	ENERGY_HI_LOOP
-
-ENERGY_MID:
-	; (BORDER_BUFFER_ENERGY) - 21 : rows of med (max 21)
-	LD 		A, 21
-	LD 		B, A
-	LD 		A, (BORDER_BUFFER_ENERGY)
-	SRA 	A 				; divide by 2 for attr dmg cheat 
-	SUB 	B				; (BORDER_BUFFER_ENERGY) - 42
-	JP   	C, ENERGY_LOW	; negative so no med
-	JP      Z, ENERGY_LOW	; 0 so no med
-
-	CP 		21
-	JP 		C, ENERGY_MED_OK
-
-	LD 		A, 21			; max 21
-
-ENERGY_MED_OK:
-	LD		B, A 
-	LD 		A, (BORDER_BUFFER_ENERGY_MED_COL)
-ENERGY_MED_LOOP:
-	LD 	 	(HL), A
-	INC 	HL
-	LD 	 	(HL), A
-	ADD 	HL, DE
-	DJNZ 	ENERGY_MED_LOOP
-
-ENERGY_LOW:
-	; (BORDER_BUFFER_ENERGY)  : rows of low (max 21)
-	LD 		A, (BORDER_BUFFER_ENERGY)
-	SRA 	A 				; divide by 2 for attr dmg cheat 
-	CP 		0
-	JP      Z, ENERGY_DONE	; 0 so no low
-
-	CP 		21
-	JP 		C, ENERGY_LOW_OK
-
-	LD 		A, 21			; max 21
-
-ENERGY_LOW_OK:
-	LD		B, A 
-	LD 		A, (BORDER_BUFFER_ENERGY_LOW_COL)
-ENERGY_LOW_LOOP:
-	LD 	 	(HL), A
-	INC 	HL
-	LD 	 	(HL), A
-	ADD 	HL, DE
-	DJNZ 	ENERGY_LOW_LOOP
+	DJNZ 	ENERGY_ON_LOOP
 
 ENERGY_DONE:
 	RET					; UPDATE_BORDER_BUFFER_ENERGY
