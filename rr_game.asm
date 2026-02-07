@@ -483,8 +483,15 @@ GAME_NO_DAMAGE_BOT_MID_R:
 
 GAME_NO_DAMAGE_BOT_RIGHT_R:
 
-
 	RET 						; GAME_ROCK_DAMAGE
+
+
+GAME_CATCH_FISH:
+
+
+
+
+	RET 						; GAME_CATCH_FISH
 
 
 ; jump table
