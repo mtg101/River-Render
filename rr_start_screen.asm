@@ -53,7 +53,8 @@ START_SHOW_SCORE:
 	AND 	%11110000	; left BCD
 	SRL 	A
 	SRL 	A
-	SRL 	A			; shifted so it's double actual number
+	SRL 	A
+	SRL 	A			; shifted so just the number
 
 	ADD		A, $30		; start of ASCII numbers
 
@@ -68,7 +69,6 @@ START_SHOW_SCORE:
 	; right
 	LD 		A, (BORDER_BUFFER_SCORE)
 	AND 	%00001111		; right BCD
-	SLA		A
 
 	ADD		A, $30		; start of ASCII numbers
 
