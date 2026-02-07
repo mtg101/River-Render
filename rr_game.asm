@@ -16,6 +16,7 @@ GAME_PROCGEN:
 
 	CALL 	GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN
 	CALL 	GAME_TOP_RAPIDS_WHITE
+	CALL 	GAME_CATCH_FISH
 
 	JP	 	GAME_ADD_ROBS
 
@@ -338,7 +339,6 @@ GAME_ROCK_DAMAGE:
 
 	; so inefficient... but just do each colour.... TODO
 
-
 	; mag...
 
 	; get base sprite col
@@ -487,9 +487,47 @@ GAME_NO_DAMAGE_BOT_RIGHT_R:
 
 
 GAME_CATCH_FISH:
+	; get base sprite col
+	LD		A, (SPRITE_X)
+	SRL		A
+	SRL     A
+	SRL     A            		; pixels / 8 is bytes
 
+	SUB 	12					; river starts 12 in
 
+	LD		D, 0
+	LD		E, A				; DE is col offset
 
+	; mid/main left
+	LD 		HL, ATTR_BASE_3
+	ADD		HL, DE				; HL points to an attr
+
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001000			; black on blue
+
+	JP		NZ, GAME_CATCH_FISH_NO_MID_LEFT
+
+	CALL 	BORDER_BUFFER_LIVES_INC
+
+GAME_CATCH_FISH_NO_MID_LEFT:
+	INC 	HL
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001000			; black on blue
+
+	JP		NZ, GAME_CATCH_FISH_NO_MID_MID
+
+	CALL 	BORDER_BUFFER_LIVES_INC
+
+GAME_CATCH_FISH_NO_MID_MID:
+	INC 	HL
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001000			; black on blue
+
+	JP		NZ, GAME_CATCH_FISH_NO_RIGHT_MID
+
+	CALL 	BORDER_BUFFER_LIVES_INC
+
+GAME_CATCH_FISH_NO_RIGHT_MID:
 
 	RET 						; GAME_CATCH_FISH
 
