@@ -15,13 +15,6 @@ GAME_ANIMATE_MAIN:
 	CALL	VBLANK_PERIOD_WORK		; 8 scanline * 224 = 1952 t-states (minus some for alignment timing)
 	CALL	TOP_BORDER_RENDER_GAME	; timining-critical flipping of top border colours
 
-	; check for space pressed
-	LD		BC, $FDFE				; a to g (s in bit 1)
-	IN		A, (C)					; read keys
-	BIT		1, A					; s is bit 1 (1 means key not pressed, 0 pressed)
-	JP		Z, START_RESTART		; go to the game...
-
-
 	; boarder or screen scroll
     LD    	A, (SCREEN_FRAME)
 	AND		%00000001			; 0-1
@@ -63,12 +56,19 @@ UPDATE_DISTANCE_SCORE:
 
 
 GAME_CLEAR_RIVER:
+	; sprite reset
+	LD 		A, 120
+	LD 		(SPRITE_X), A
+	LD 		(SPRITE_X_NEW), A
+
 	; scores
 	LD 		A, 0
 	LD 		(BORDER_BUFFER_FISH), A
 	LD 		(BORDER_BUFFER_SCORE), A
 	LD 		A, 112
 	LD 		(BORDER_BUFFER_HEALTH), A
+
+	; labels
 
 	; reset frame counter
 	LD 		A, 0-2
@@ -337,3 +337,5 @@ SPRITE_SCREEN_ADDR_OLD:
 
 SPRITE_FRAME_ADDR_OLD:
 	DEFW 	0
+
+	

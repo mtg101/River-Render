@@ -151,8 +151,14 @@ BORDER_BUFFER_HEALTH_INC:
 BORDER_BUFFER_HEALTH_DEC:
 	LD		A, (BORDER_BUFFER_HEALTH)
 	CP 		0
-	RET 	Z			; already 0, don't DEC
+	JP	 	NZ, NOT_DEAD
 
+	; dead
+	LD 		A, 1			; died text
+	LD 		(START_LAST_GAME_STAUS), A
+	JP 		START_RESTART	; we won, go to start screen with win text
+
+NOT_DEAD:
 	DEC 	A
 	LD 		(BORDER_BUFFER_HEALTH), A
 	RET 				; BORDER_BUFFER_HEALTH_DEC
@@ -207,9 +213,15 @@ BORDER_BUFFER_FISH:
 
 BORDER_BUFFER_FISH_INC:
 	LD		A, (BORDER_BUFFER_FISH)
-	CP 		112
-	RET 	NC			; already 56 or bigger, don't INC
+	CP 		112-8		; -8 as we'll now be max and win
+	JP  	C, BORDER_BUFFER_FISH_INC_YES	; not at max
 
+	LD 		A, 2			; won text
+	LD 		(START_LAST_GAME_STAUS), A
+	JP 		START_RESTART	; we won, go to start screen with win text
+
+
+BORDER_BUFFER_FISH_INC_YES:
 	ADD 	A, 8
 	LD 		(BORDER_BUFFER_FISH), A
 
