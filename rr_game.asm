@@ -333,6 +333,160 @@ GAME_TOP_RAPIDS_WHITE_LOOP_DONE:
 
 	RET 						; GAME_TOP_RAPIDS_WHITE
 
+GAME_ROCK_DAMAGE:
+	; only 2 main rows count as damage...
+
+	; so inefficient... but just do each colour.... TODO
+
+
+	; mag...
+
+	; get base sprite col
+	LD		A, (SPRITE_X)
+	SRL		A
+	SRL     A
+	SRL     A            		; pixels / 8 is bytes
+
+	SUB 	12					; river starts 12 in
+
+	LD		D, 0
+	LD		E, A				; DE is col offset
+
+	; top left
+	LD 		HL, ATTR_BASE_2
+	ADD		HL, DE				; HL points to an attr
+
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001011			; mag on blue
+
+	JP		NZ, GAME_NO_DAMAGE_TOP_LEFT
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_TOP_LEFT:
+	INC 	HL
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001011			; mag on blue
+
+	JP		NZ, GAME_NO_DAMAGE_TOP_MID
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_TOP_MID:
+	INC 	HL
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001011			; mag on blue
+
+	JP		NZ, GAME_NO_DAMAGE_TOP_RIGHT
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_TOP_RIGHT:
+
+	; bot left
+	LD 		HL, ATTR_BASE_3
+	ADD		HL, DE				; HL points to an attr
+
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001011			; mag on blue
+
+	JP		NZ, GAME_NO_DAMAGE_BOT_LEFT
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_BOT_LEFT:
+	INC 	HL
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001011			; mag on blue
+
+	JP		NZ, GAME_NO_DAMAGE_BOT_MID
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_BOT_MID:
+	INC 	HL
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001011			; mag on blue
+
+	JP		NZ, GAME_NO_DAMAGE_BOT_RIGHT
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_BOT_RIGHT:
+
+	; red...
+
+	; top left
+	LD 		HL, ATTR_BASE_2
+	ADD		HL, DE				; HL points to an attr
+
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001010			; red on blue
+
+	JP		NZ, GAME_NO_DAMAGE_TOP_LEFT_R
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_TOP_LEFT_R:
+	INC 	HL
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001010			; red on blue
+
+	JP		NZ, GAME_NO_DAMAGE_TOP_MID_R
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_TOP_MID_R:
+	INC 	HL
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001010			; red on blue
+
+	JP		NZ, GAME_NO_DAMAGE_TOP_RIGHT_R
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_TOP_RIGHT_R:
+
+	; bot left
+	LD 		HL, ATTR_BASE_3
+	ADD		HL, DE				; HL points to an attr
+
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001010			; red on blue
+
+	JP		NZ, GAME_NO_DAMAGE_BOT_LEFT_R
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_BOT_LEFT_R:
+	INC 	HL
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%000010101			; red on blue
+
+	JP		NZ, GAME_NO_DAMAGE_BOT_MID_R
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_BOT_MID_R:
+	INC 	HL
+	LD 		A, (HL)				; A has the ATTR
+	CP 		%00001010			; red on blue
+
+	JP		NZ, GAME_NO_DAMAGE_BOT_RIGHT_R
+
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+	CALL 	BORDER_BUFFER_ENERGY_DEC
+
+GAME_NO_DAMAGE_BOT_RIGHT_R:
+
+
+	RET 						; GAME_ROCK_DAMAGE
+
+
 ; jump table
 GAME_ADD_ROB_JUMP_TABLE:
 	DEFW 	GAME_ADD_BLANK
@@ -346,7 +500,7 @@ GAME_ADD_ROB_JUMP_TABLE:
 
 	DEFW 	GAME_ADD_RAPIDS
 	DEFW 	GAME_ADD_RAPIDS
-	DEFW 	GAME_ADD_ROCK
+	DEFW 	GAME_ADD_RAPIDS
 	DEFW 	GAME_ADD_ROCK
 	DEFW 	GAME_ADD_ROCK
 	DEFW 	GAME_ADD_ROCK	
