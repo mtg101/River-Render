@@ -399,11 +399,11 @@ UPDATE_BORDER_BUFFER_SCORE_INNER_LOOP_R:
 	RET 				; UPDATE_BOARDER_BUFFER_SCORE
 
 BORDER_BUFFER_ENERGY:
-	DEFB	56
+	DEFB	112			; 56 * 2 for cheating double attr hits...
 
 BORDER_BUFFER_ENERGY_INC:
 	LD		A, (BORDER_BUFFER_ENERGY)
-	CP 		56
+	CP 		112
 	RET 	NC			; already 56 or bigger, don't INC
 
 	INC 	A
@@ -433,15 +433,17 @@ BORDER_BUFFER_ENERGY_BG_COL:
 	DEFB	COL_RED
 
 UPDATE_BORDER_BUFFER_ENERGY:
-	LD 		DE, 10		; 11 per row, but INCing over for double column
+	LD 		DE, 10			; 11 per row, but INCing over for double column
 	LD 		HL, TOP_BORDER_BUFFER_GAME + 9
-						; points to first energy bar
+							; points to first energy bar
 
 	; 56 - (BORDER_BUFFER_ENERGY) : rows of bg
 	LD 		A, (BORDER_BUFFER_ENERGY)
+	SRA 	A 				; divide by 2 for attr dmg cheat 
+
 	LD  	B, A
 	LD 		A, 56
-	SUB		B					; A now has how many rows of bg
+	SUB		B				; A now has how many rows of bg
 	JP 		Z, ENERGY_HI	; energy is 56 full, no bg colour needed
 
 	LD 		B, A
@@ -458,6 +460,7 @@ ENERGY_HI:
 	LD 		A, 42
 	LD 		B, A
 	LD 		A, (BORDER_BUFFER_ENERGY)
+	SRA 	A 				; divide by 2 for attr dmg cheat 
 	SUB 	B				; (BORDER_BUFFER_ENERGY) - 42
 	JP   	C, ENERGY_MID	; negative so no hi
 	JP      Z, ENERGY_MID	; 0 so no high
@@ -476,6 +479,7 @@ ENERGY_MID:
 	LD 		A, 21
 	LD 		B, A
 	LD 		A, (BORDER_BUFFER_ENERGY)
+	SRA 	A 				; divide by 2 for attr dmg cheat 
 	SUB 	B				; (BORDER_BUFFER_ENERGY) - 42
 	JP   	C, ENERGY_LOW	; negative so no med
 	JP      Z, ENERGY_LOW	; 0 so no med
@@ -498,6 +502,7 @@ ENERGY_MED_LOOP:
 ENERGY_LOW:
 	; (BORDER_BUFFER_ENERGY)  : rows of low (max 21)
 	LD 		A, (BORDER_BUFFER_ENERGY)
+	SRA 	A 				; divide by 2 for attr dmg cheat 
 	CP 		0
 	JP      Z, ENERGY_DONE	; 0 so no low
 
