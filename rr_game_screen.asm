@@ -61,6 +61,11 @@ GAME_CLEAR_RIVER:
 	LD 		(SPRITE_X), A
 	LD 		(SPRITE_X_NEW), A
 
+	; banks
+	LD 		A, 0
+	LD 		(BANK_BANK_LEFT), A
+	LD 		(BANK_BANK_RIGHT), A
+
 	; scores
 	LD 		A, 0
 	LD 		(BORDER_BUFFER_FISH), A

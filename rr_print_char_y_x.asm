@@ -207,13 +207,6 @@ PRINT_HL_STRING_AT_Y_X_DONE:
 
 	RET 						; PRINT_HL_STRING_AT_Y_X 
 
-
-
-
-
-
-
-
 PRINT_CHAR: 
 	defb	0
 

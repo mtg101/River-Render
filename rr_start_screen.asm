@@ -28,7 +28,7 @@ START_MAIN:
 
 	CALL 	PRINT_HL_STRING_AT_Y_X
 
-	JP 		START_ANIMATE_MAIN
+	JP 		START_SHOW_SCORE
 
 START_SHOW_LOST:
 	LD		A, 3
@@ -39,6 +39,46 @@ START_SHOW_LOST:
 
 	CALL 	PRINT_HL_STRING_AT_Y_X
 
+START_SHOW_SCORE:
+	LD		A, 6
+	LD		(PRINT_AT_Y), A
+	LD		A, 10
+	LD		(PRINT_AT_X), A
+	LD		HL, START_SCORE_STRING
+
+	CALL 	PRINT_HL_STRING_AT_Y_X
+
+	; left
+	LD 		A, (BORDER_BUFFER_SCORE)
+	AND 	%11110000	; left BCD
+	SRL 	A
+	SRL 	A
+	SRL 	A			; shifted so it's double actual number
+
+	ADD		A, $30		; start of ASCII numbers
+
+	LD 		(PRINT_CHAR), A
+	LD		A, 6
+	LD		(PRINT_AT_Y), A
+	LD		A, 10+10
+	LD		(PRINT_AT_X), A
+
+	CALL 	PRINT_CHAR_AT_Y_X
+
+	; right
+	LD 		A, (BORDER_BUFFER_SCORE)
+	AND 	%00001111		; right BCD
+	SLA		A
+
+	ADD		A, $30		; start of ASCII numbers
+
+	LD 		(PRINT_CHAR), A
+	LD		A, 6
+	LD		(PRINT_AT_Y), A
+	LD		A, 10+11
+	LD		(PRINT_AT_X), A
+
+	CALL 	PRINT_CHAR_AT_Y_X
 
 START_ANIMATE_MAIN:
 	HALT							; wait for vsync (fired after bottom border, start of vblank)
@@ -320,6 +360,9 @@ START_WON_STRING:
 
 START_DIED_STRING:
 	DEFB	"WASTED !", 0
+
+START_SCORE_STRING:
+	DEFB	"Distance: ", 0
 
 START_LAST_GAME_STAUS:
 	DEFB 	0 			; 0 new, 1 lost, 2 won
