@@ -80,6 +80,16 @@ START_SHOW_SCORE:
 
 	CALL 	PRINT_CHAR_AT_Y_X
 
+	; warning
+	LD		A, 10
+	LD		(PRINT_AT_Y), A
+	LD		A, 10
+	LD		(PRINT_AT_X), A
+	LD		HL, START_WARN_STRING	
+
+	CALL 	PRINT_HL_STRING_AT_Y_X
+
+
 START_ANIMATE_MAIN:
 	HALT							; wait for vsync (fired after bottom border, start of vblank)
 
@@ -363,6 +373,9 @@ START_DIED_STRING:
 
 START_SCORE_STRING:
 	DEFB	"Distance: ", 0
+
+START_WARN_STRING:
+	DEFB	"Warning: ICE", 0
 
 START_LAST_GAME_STAUS:
 	DEFB 	0 			; 0 new, 1 lost, 2 won
