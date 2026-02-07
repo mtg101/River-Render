@@ -15,8 +15,6 @@ GAME_PROCGEN:
 	JP 		NZ, GAME_NOT_ATTR_TIME
 
 	CALL 	GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN
-	CALL 	GAME_TOP_RAPIDS_WHITE
-	CALL 	GAME_CATCH_FISH
 
 	JP	 	GAME_ADD_ROBS
 
@@ -493,43 +491,109 @@ GAME_CATCH_FISH:
 	SRL     A
 	SRL     A            		; pixels / 8 is bytes
 
-	SUB 	12					; river starts 12 in
+	SUB 	12					; attr river starts 12 in
 
 	LD		D, 0
 	LD		E, A				; DE is col offset
 
 	; mid/main left
-	LD 		HL, ATTR_BASE_3
+	LD 		HL, ATTR_BASE_4
 	ADD		HL, DE				; HL points to an attr
 
 	LD 		A, (HL)				; A has the ATTR
 	CP 		%00001000			; black on blue
+	JP		Z, GAME_CATCH_FISH_MID_LEFT
+	CP 		%00001110			; yellow on blue
+	JP		Z, GAME_CATCH_FISH_MID_LEFT
+	JP		GAME_CATCH_FISH_NO_MID_LEFT
 
-	JP		NZ, GAME_CATCH_FISH_NO_MID_LEFT
-
+GAME_CATCH_FISH_MID_LEFT:
+	LD 		(HL), %00001111		; white on blue
+	CALL 	GAME_CLEAR_FISH_PIXELS	
 	CALL 	BORDER_BUFFER_LIVES_INC
 
 GAME_CATCH_FISH_NO_MID_LEFT:
 	INC 	HL
+	INC 	DE					; for fish pixel call
 	LD 		A, (HL)				; A has the ATTR
 	CP 		%00001000			; black on blue
+	JP		Z, GAME_CATCH_FISH_MID_MID
+	CP 		%00001110			; yellow on blue
+	JP		Z, GAME_CATCH_FISH_MID_MID
+	JP		GAME_CATCH_FISH_NO_MID_MID
 
-	JP		NZ, GAME_CATCH_FISH_NO_MID_MID
-
+GAME_CATCH_FISH_MID_MID:
+	LD 		(HL), %00001111		; white on blue
+	CALL 	GAME_CLEAR_FISH_PIXELS	
 	CALL 	BORDER_BUFFER_LIVES_INC
 
 GAME_CATCH_FISH_NO_MID_MID:
 	INC 	HL
+	INC 	DE					; for fish pixel call
 	LD 		A, (HL)				; A has the ATTR
 	CP 		%00001000			; black on blue
-
+	JP		Z, GAME_CATCH_FISH_RIGHT_MID
+	CP 		%00001110			; yellow on blue
+	JP		Z, GAME_CATCH_FISH_RIGHT_MID
 	JP		NZ, GAME_CATCH_FISH_NO_RIGHT_MID
 
+GAME_CATCH_FISH_RIGHT_MID:
+	LD 		(HL), %00001111		; white on blue
+	CALL 	GAME_CLEAR_FISH_PIXELS	
 	CALL 	BORDER_BUFFER_LIVES_INC
 
 GAME_CATCH_FISH_NO_RIGHT_MID:
 
 	RET 						; GAME_CATCH_FISH
+
+
+; DE is attr col offset, so +3 for river pixelsxz
+GAME_CLEAR_FISH_PIXELS:
+	PUSH 	HL
+
+	; row 0
+	LD 		HL, SCREEN_BASE_24 + 3
+	ADD		HL, DE				
+	LD 		(HL), 0
+
+	; row 1
+	LD 		HL, SCREEN_BASE_25 + 3
+	ADD		HL, DE				
+	LD 		(HL), 0
+
+	; row 2
+	LD 		HL, SCREEN_BASE_26 + 3
+	ADD		HL, DE				
+	LD 		(HL), 0
+
+	; row 3
+	LD 		HL, SCREEN_BASE_27 + 3
+	ADD		HL, DE				
+	LD 		(HL), 0
+
+	; row 4
+	LD 		HL, SCREEN_BASE_28 + 3
+	ADD		HL, DE				
+	LD 		(HL), 0
+
+	; row 5
+	LD 		HL, SCREEN_BASE_29 + 3
+	ADD		HL, DE				
+	LD 		(HL), 0
+
+	; row 6
+	LD 		HL, SCREEN_BASE_30 + 3
+	ADD		HL, DE				
+	LD 		(HL), 0
+
+	; row 7
+	LD 		HL, SCREEN_BASE_31 + 3
+	ADD		HL, DE				
+	LD 		(HL), 0
+
+	POP 	HL
+
+	RET 						; GAME_CLEAR_FISH
 
 
 ; jump table
@@ -546,10 +610,15 @@ GAME_ADD_ROB_JUMP_TABLE:
 	DEFW 	GAME_ADD_RAPIDS
 	DEFW 	GAME_ADD_RAPIDS
 	DEFW 	GAME_ADD_RAPIDS
-	DEFW 	GAME_ADD_ROCK
-	DEFW 	GAME_ADD_ROCK
-	DEFW 	GAME_ADD_ROCK	
-	DEFW 	GAME_ADD_ROCK
+	; DEFW 	GAME_ADD_ROCK
+	; DEFW 	GAME_ADD_ROCK
+	; DEFW 	GAME_ADD_ROCK	
+	; DEFW 	GAME_ADD_ROCK
+	DEFW 	GAME_ADD_FISH	
+
+	DEFW 	GAME_ADD_FISH	
+	DEFW 	GAME_ADD_FISH	
+	DEFW 	GAME_ADD_FISH	
 	DEFW 	GAME_ADD_FISH	
 
 
