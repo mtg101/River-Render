@@ -63,6 +63,13 @@ UPDATE_DISTANCE_SCORE:
 
 
 GAME_CLEAR_RIVER:
+	; scores
+	LD 		A, 0
+	LD 		(BORDER_BUFFER_FISH), A
+	LD 		(BORDER_BUFFER_SCORE), A
+	LD 		A, 112
+	LD 		(BORDER_BUFFER_HEALTH), A
+
 	; reset frame counter
 	LD 		A, 0-2
 	LD 		(SCREEN_FRAME), A
