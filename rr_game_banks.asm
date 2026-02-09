@@ -95,7 +95,7 @@ BANK_RENDER_BANKS:
 	CALL 	GET_16_PIXEL_BAR_LEFT			; Output: D = Left Byte, E = Right Byte
 
 	; render left
-	LD 		HL, SCREEN_BASE_191	+1			; leftmost bank
+	LD 		HL, SCREEN_BASE_199	+1			; leftmost bank
 	LD 		(HL), D							; pixels
 
 	INC 	HL								; inner left bank
@@ -107,7 +107,7 @@ BANK_RENDER_BANKS:
 	CALL 	GET_16_PIXEL_BAR_RIGHT			; Output: D = Left Byte, E = Right Byte
 
 	; render right
-	LD 		HL, SCREEN_BASE_191 + 11		; inner right
+	LD 		HL, SCREEN_BASE_199 + 11		; inner right
 	LD 		(HL), E							; pixels
 
 	INC 	HL								; rightmost
@@ -276,7 +276,7 @@ BANK_ADD_GRASS:
 	; which grass
     CALL  	RNG
     LD    	A, (NEXT_RNG)
-	AND 	%00001111			; 0-15
+	AND 	%00000111			; 0-7
 
 	; LUT
 	RLCA 						; 16bit, so shift left to double
@@ -291,23 +291,118 @@ BANK_ADD_GRASS:
 	LD		B, (HL)				; high byte
 	LD 		C, A				; BC now points to pixels
 
-	JP 		BANK_ADD_8x8_PIXELS
+	CALL 	BANK_ADD_8x8_PIXELS
+	RET 						; back to fake return
 
 BANK_ADD_SIGN:
 	LD 		BC, BANK_SIGN_PIXELS
+	CALL	BANK_ADD_8x8_PIXELS
+	RET 						; back to fake return
 
-	JP 		BANK_ADD_8x8_PIXELS
+
+	; DE is pixels
+	MACRO Line_Xor	col_offset
+		LD		HL, SCREEN_BASE_192 + col_offset
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in C
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+		INC 	DE					; next sprite byte
+
+		LD		HL, SCREEN_BASE_193 + col_offset
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in C
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+		INC 	DE					; next sprite byte
+
+		LD		HL, SCREEN_BASE_194 + col_offset
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in C
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+		INC 	DE					; next sprite byte
+
+		LD		HL, SCREEN_BASE_195 + col_offset
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in C
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+		INC 	DE					; next sprite byte
+
+		LD		HL, SCREEN_BASE_196 + col_offset
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in C
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+		INC 	DE					; next sprite byte
+
+		LD		HL, SCREEN_BASE_197 + col_offset
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in C
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+		INC 	DE					; next sprite byte
+
+		LD		HL, SCREEN_BASE_198 + col_offset
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in C
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+		INC 	DE					; next sprite byte
+
+		LD		HL, SCREEN_BASE_199 + col_offset
+		LD 		A, (HL) 			; current pixels
+		LD 		C, A 				; store in C
+		LD 		A, (DE)				; sprite pixels
+		XOR 	C 					; XOR together
+		LD 		(HL), A 			; write result back
+
+	ENDM
+
 
 BANK_ADD_FISHER:
 	LD 		BC, BANK_FISHER_LEFT_PIXELS
 	LD 		A, E 				; col offset
 	CP 		0					
-	JP 		Z, BANK_ADD_FISHER_DONE
+	JP 		Z, BANK_ADD_FISHER_LEFT
 
 	LD 		BC, BANK_FISHER_RIGHT_PIXELS
 
+	; xor fishing lines right
+	PUSH 	BC 
+	PUSH 	DE 
+	LD 		DE, BANK_LINE_RIGHT_RIGHT_PIXELS
+	Line_Xor 	12
+	LD 		DE, BANK_LINE_RIGHT_LEFT_PIXELS
+	Line_Xor 	11
+	POP 	DE 
+	POP 	BC
+
+	JP 			BANK_ADD_FISHER_DONE
+
+BANK_ADD_FISHER_LEFT:
+	PUSH 	BC 
+	PUSH 	DE 
+	; xor fishing lines left
+	LD 		DE, BANK_LINE_LEFT_LEFT_PIXELS
+	Line_Xor 	1
+	LD 		DE, BANK_LINE_LEFT_RIGHT_PIXELS
+	Line_Xor 	2
+	POP 	DE 
+	POP 	BC
+
 BANK_ADD_FISHER_DONE:
-	JP 		BANK_ADD_8x8_PIXELS
+	CALL 	BANK_ADD_8x8_PIXELS
+
+	RET							; back to fake return
 
 ; DE contains row, BC points to pixels
 BANK_ADD_8x8_PIXELS:
@@ -366,8 +461,7 @@ BANK_ADD_8x8_PIXELS:
 	LD 		A, (BC)
 	LD 		(HL), A
 
-	RET 						; back to faked return
-
+	RET 						; BANK_ADD_8x8_PIXELS		
 
 BANK_ADD_BLANK:
 	RET 						; back to faked return
@@ -406,23 +500,63 @@ BANK_SIGN_PIXELS:
 
 BANK_FISHER_LEFT_PIXELS:
 	DEFB 	%00000001
-	DEFB 	%00000010
-	DEFB 	%00000100
-	DEFB	%00001000
+	DEFB 	%01110010
+	DEFB 	%01100100
+	DEFB	%01101000
 	DEFB 	%11110000
 	DEFB 	%11110000
 	DEFB 	%11110000
 	DEFB 	%11110000
 
+BANK_LINE_LEFT_LEFT_PIXELS:
+	DEFB 	%10000000
+	DEFB 	%00100000
+	DEFB 	%00001000
+	DEFB 	%00000010
+	DEFB 	%00000000
+	DEFB 	%00000000
+	DEFB 	%00000000
+	DEFB 	%00000000
+
+BANK_LINE_LEFT_RIGHT_PIXELS:
+	DEFB 	%00000000
+	DEFB 	%00000000
+	DEFB 	%00000000
+	DEFB 	%00000000
+	DEFB 	%10000000
+	DEFB 	%00100000
+	DEFB 	%00001000
+	DEFB 	%00000010
+
 BANK_FISHER_RIGHT_PIXELS:
 	DEFB 	%10000000
-	DEFB 	%01000000
+	DEFB 	%01001110
+	DEFB 	%00100110
+	DEFB	%00010110
+	DEFB 	%00001111
+	DEFB 	%00001111
+	DEFB 	%00001111
+	DEFB 	%00001111
+
+BANK_LINE_RIGHT_RIGHT_PIXELS:
+	DEFB 	%00000001
+	DEFB 	%00000100
 	DEFB 	%00010000
-	DEFB	%00001000
-	DEFB 	%00001111
-	DEFB 	%00001111
-	DEFB 	%00001111
-	DEFB 	%00001111
+	DEFB 	%01000000
+	DEFB 	%00000000
+	DEFB 	%00000000
+	DEFB 	%00000000
+	DEFB 	%00000000
+
+BANK_LINE_RIGHT_LEFT_PIXELS:
+	DEFB 	%00000000
+	DEFB 	%00000000
+	DEFB 	%00000000
+	DEFB 	%00000000
+	DEFB 	%00000001
+	DEFB 	%00000100
+	DEFB 	%00010000
+	DEFB 	%01000000
 
 BANK_GRASS_PIXELS_LUT:
 	DEFW	BANK_GRASS_PIXELS_1
@@ -433,15 +567,6 @@ BANK_GRASS_PIXELS_LUT:
 	DEFW	BANK_GRASS_PIXELS_6
 	DEFW	BANK_GRASS_PIXELS_7
 	DEFW	BANK_GRASS_PIXELS_8
-
-	DEFW	BANK_GRASS_PIXELS_9
-	DEFW	BANK_GRASS_PIXELS_10
-	DEFW	BANK_GRASS_PIXELS_11
-	DEFW	BANK_GRASS_PIXELS_12
-	DEFW	BANK_GRASS_PIXELS_13
-	DEFW	BANK_GRASS_PIXELS_14
-	DEFW	BANK_GRASS_PIXELS_15
-	DEFW	BANK_GRASS_PIXELS_16
 
 BANK_GRASS_PIXELS_1:
 	DEFB 	%00000000
@@ -464,28 +589,28 @@ BANK_GRASS_PIXELS_2:
 	DEFB 	%00011110
 
 BANK_GRASS_PIXELS_3:
-	DEFB 	%00000000
+	DEFB 	%00000100
 	DEFB 	%00001000
 	DEFB 	%01000100
 	DEFB 	%00100010
 	DEFB 	%00100100
 	DEFB 	%00101000
 	DEFB 	%00011000
-	DEFB 	%00011110
+	DEFB 	%00111000
 
 BANK_GRASS_PIXELS_4:
 	DEFB 	%00000000
-	DEFB 	%00001000
+	DEFB 	%00101000
 	DEFB 	%01000100
 	DEFB 	%00100010
 	DEFB 	%00100100
 	DEFB 	%00101000
 	DEFB 	%00011000
-	DEFB 	%00011110
+	DEFB 	%00011100
 
 BANK_GRASS_PIXELS_5:
-	DEFB 	%00000000
-	DEFB 	%00001000
+	DEFB 	%00000001
+	DEFB 	%00001010
 	DEFB 	%01000100
 	DEFB 	%00100010
 	DEFB 	%00100100
@@ -495,112 +620,33 @@ BANK_GRASS_PIXELS_5:
 
 BANK_GRASS_PIXELS_6:
 	DEFB 	%00000000
-	DEFB 	%00001000
+	DEFB 	%00011000
 	DEFB 	%01000100
-	DEFB 	%00100010
+	DEFB 	%00110010
 	DEFB 	%00100100
 	DEFB 	%00101000
 	DEFB 	%00011000
-	DEFB 	%00011110
+	DEFB 	%00011100
 
 BANK_GRASS_PIXELS_7:
 	DEFB 	%00000000
-	DEFB 	%00001000
+	DEFB 	%10000000
 	DEFB 	%01000100
 	DEFB 	%00100010
 	DEFB 	%00100100
 	DEFB 	%00101000
 	DEFB 	%00011000
-	DEFB 	%00011110
+	DEFB 	%00011000
 
 BANK_GRASS_PIXELS_8:
 	DEFB 	%00000000
-	DEFB 	%00001000
+	DEFB 	%10000011
 	DEFB 	%01000100
 	DEFB 	%00100010
 	DEFB 	%00100100
 	DEFB 	%00101000
 	DEFB 	%00011000
-	DEFB 	%00011110
+	DEFB 	%00011100
 
-BANK_GRASS_PIXELS_9:
-	DEFB 	%00000000
-	DEFB 	%00001000
-	DEFB 	%01000100
-	DEFB 	%00100010
-	DEFB 	%00100100
-	DEFB 	%00101000
-	DEFB 	%00011000
-	DEFB 	%00011110
-
-BANK_GRASS_PIXELS_10:
-	DEFB 	%00000000
-	DEFB 	%00001000
-	DEFB 	%01000100
-	DEFB 	%00100010
-	DEFB 	%00100100
-	DEFB 	%00101000
-	DEFB 	%00011000
-	DEFB 	%00011110
-
-BANK_GRASS_PIXELS_11:
-	DEFB 	%00000000
-	DEFB 	%00001000
-	DEFB 	%01000100
-	DEFB 	%00100010
-	DEFB 	%00100100
-	DEFB 	%00101000
-	DEFB 	%00011000
-	DEFB 	%00011110
-
-BANK_GRASS_PIXELS_12:
-	DEFB 	%00000000
-	DEFB 	%00001000
-	DEFB 	%01000100
-	DEFB 	%00100010
-	DEFB 	%00100100
-	DEFB 	%00101000
-	DEFB 	%00011000
-	DEFB 	%00011110
-
-BANK_GRASS_PIXELS_13:
-	DEFB 	%00000000
-	DEFB 	%00001000
-	DEFB 	%01000100
-	DEFB 	%00100010
-	DEFB 	%00100100
-	DEFB 	%00101000
-	DEFB 	%00011000
-	DEFB 	%00011110
-
-BANK_GRASS_PIXELS_14:
-	DEFB 	%00000000
-	DEFB 	%00001000
-	DEFB 	%01000100
-	DEFB 	%00100010
-	DEFB 	%00100100
-	DEFB 	%00101000
-	DEFB 	%00011000
-	DEFB 	%00011110
-
-BANK_GRASS_PIXELS_15:
-	DEFB 	%00000000
-	DEFB 	%00001000
-	DEFB 	%01000100
-	DEFB 	%00100010
-	DEFB 	%00100100
-	DEFB 	%00101000
-	DEFB 	%00011000
-	DEFB 	%00011110
-
-BANK_GRASS_PIXELS_16:
-	DEFB 	%00000000
-	DEFB 	%00001000
-	DEFB 	%01000100
-	DEFB 	%00100010
-	DEFB 	%00100100
-	DEFB 	%00101000
-	DEFB 	%00011000
-	DEFB 	%00011110
 
 
