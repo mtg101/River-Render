@@ -6,6 +6,4 @@ And it's become a 14 column stack render. Pixels, plus attrs, plus sprite... all
 
 --
 
-And until / if I put some key instructions in: Z/X moves the boat.
-S currently returns to start screen (until I work out collisions).
-O/K will one day do speed (hopefully).
+Z/X to move boat. 
