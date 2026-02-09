@@ -16,9 +16,14 @@ GAME_PROCGEN:
 
 	CALL 	GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN
 
-	JP	 	GAME_ADD_ROBS
+	CALL 	GAME_ADD_RAPIDS
+	CALL 	GAME_ADD_FISH
+	CALL 	GAME_ADD_ROCK
 
-GAME_ADD_ROB_DONE:
+	CALL 	GAME_ADD_RAPIDS
+	CALL 	GAME_ADD_FISH
+	CALL 	GAME_ADD_ROCK
+
 	JP 		BANK_ADD_BOBS
 
 GAME_ADD_BOB_DONE:
@@ -46,8 +51,14 @@ GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN_LOOP_NEXT:
 	RET 						; 	GAME_ROB_COUNTDOWN_SCOREBOARD_COUNTDOWN
 
 
-; add River OBjects :)
-GAME_ADD_ROBS:
+GAME_ADD_FISH:
+	; 1 in 32 chance
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+	AND 	%00011111			; 0-31
+	CP 		%00011111
+	RET 	NZ					; 1 in 32
+
 	; which col
     CALL  	RNG
     LD    	A, (NEXT_RNG)
@@ -61,31 +72,8 @@ GAME_ADD_ROBS:
 	ADD 	HL, DE
 	LD 		A, (HL)
 	CP 		0
-	JP 		NZ, GAME_ADD_ROB_DONE	; skip if it clashes
+	RET		NZ					; skip if it clashes
 
-
-	; which ROB
-    CALL  	RNG
-    LD    	A, (NEXT_RNG)
-	AND 	%00001111			; 0-15
-
-	; jump table
-	RLCA 						; 16bit, so shift left to double
-	LD 		H, 0
-	LD		L, A				; offset in HL
-	LD 		BC, GAME_ADD_ROB_JUMP_TABLE
-
-	ADD 	HL, BC				; points to where to call
-
-	LD 		A, (HL)				; low byt eof addr
-	INC 	HL
-	LD		H, (HL)				; high byte
-	LD 		L, A				; HL now has dest addr
-
-	JP  	(HL)				; quick jump
-
-
-GAME_ADD_FISH:
 	; update scorboard
 	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
 	ADD 	HL, DE
@@ -133,9 +121,33 @@ GAME_ADD_FISH_GOT_COLOUR:
 	LD		B, (HL)				; high byte
 	LD 		C, A				; BC now points to pixels
 
-	JP 		GAME_ADD_8x8_PIXELS
+	CALL	GAME_ADD_8x8_PIXELS
+	RET							; GAME_ADD_FISH
+
 
 GAME_ADD_ROCK:
+	; 1 in 8 chance
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+	AND 	%00000111			; 0-7
+	CP 		%00000111
+	RET 	NZ					; 1 in 8
+
+	; which col
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+	AND 	%00000111			; 0-7
+
+	LD 		D, 0
+	LD 		E, A				; 0-7 in DE
+
+	; check not clashing with existing object
+	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
+	ADD 	HL, DE
+	LD 		A, (HL)
+	CP 		0
+	RET		NZ					; skip if it clashes
+
 	; update scorboard
 	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
 	ADD 	HL, DE
@@ -183,7 +195,8 @@ GAME_ADD_ROCK_GOT_COLOUR:
 	LD		B, (HL)				; high byte
 	LD 		C, A				; BC now points to pixels
 
-	JP 		GAME_ADD_8x8_PIXELS
+	CALL	GAME_ADD_8x8_PIXELS
+	RET							; GAME_ADD_ROCK
 
 ; DE is col offset, BC points to pixels
 GAME_ADD_8x8_PIXELS:
@@ -242,14 +255,31 @@ GAME_ADD_8x8_PIXELS:
 	LD 		A, (BC)
 	LD 		(HL), A
 
-	JP 		GAME_ADD_ROB_DONE
-
-
-GAME_ADD_BLANK:
-	JP 		GAME_ADD_ROB_DONE
-
+	RET 						; GAME_ADD_8x8_PIXELS
 
 GAME_ADD_RAPIDS:
+	; 1 in 4 chance
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+	AND 	%00000011			; 0-3
+	CP 		%00000011
+	RET 	NZ					; 1 in 4
+
+	; which col
+    CALL  	RNG
+    LD    	A, (NEXT_RNG)
+	AND 	%00000111			; 0-7
+
+	LD 		D, 0
+	LD 		E, A				; 0-7 in DE
+
+	; check not clashing with existing object
+	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
+	ADD 	HL, DE
+	LD 		A, (HL)
+	CP 		0
+	RET		NZ					; skip if it clashes
+
 	; update scorboard
 	LD 		HL, GAME_ROB_COUNTDOWN_SCOREBOARD
 	ADD 	HL, DE
@@ -311,7 +341,7 @@ GAME_ADD_RAPID_GOT_COLOUR:
 
 	LD 		(HL), A				; random byte into random position
 
-	JP 		GAME_ADD_ROB_DONE
+	RET 						; GAME_ADD_RAPIDS
 
 ; any cyan on blue attrs in the boat rows need to be white
 GAME_TOP_RAPIDS_WHITE:
@@ -567,26 +597,6 @@ GAME_CLEAR_FISH_PIXELS:
 
 	RET 						; GAME_CLEAR_FISH
 
-
-; jump table
-GAME_ADD_ROB_JUMP_TABLE:
-	DEFW 	GAME_ADD_BLANK
-	DEFW 	GAME_ADD_BLANK
-	DEFW 	GAME_ADD_BLANK
-	DEFW 	GAME_ADD_RAPIDS
-	DEFW 	GAME_ADD_RAPIDS
-	DEFW 	GAME_ADD_RAPIDS
-	DEFW 	GAME_ADD_RAPIDS
-	DEFW 	GAME_ADD_RAPIDS
-
-	DEFW 	GAME_ADD_RAPIDS
-	DEFW 	GAME_ADD_RAPIDS
-	DEFW 	GAME_ADD_RAPIDS
-	DEFW 	GAME_ADD_ROCK
-	DEFW 	GAME_ADD_ROCK
-	DEFW 	GAME_ADD_ROCK	
-	DEFW 	GAME_ADD_ROCK
-	DEFW 	GAME_ADD_FISH	
 
 GAME_FISH_PIXELS_LUT:
 	DEFW 	GAME_FISH_PIXELS_1
